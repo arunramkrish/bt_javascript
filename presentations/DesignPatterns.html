@@ -1,0 +1,2071 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Object Oriented Javascript</title>
+<link rel="stylesheet" href="./resources/training.css">
+<link rel="stylesheet" href="./resources/recipes.css">
+<script src="./resources/jquery.js"></script>
+<script src="./resources/jquery.chili.js"></script>
+<script src="./resources/recipes.js"></script>
+<script src="./resources/training.js"></script>
+</head>
+<body>
+<h3 class="">Design Patterns</h3>
+<div id="area">
+<pre id="pre" class="javascript" style="height: 500px; display: block;"></pre>
+<form id="form">
+<div class="buttons" style="display: block;">
+<input type="submit" value="Run" class="run" id="run" style="display: none;">
+<input type="button" id="prev" value="<< Prev" style="visibility: visible;">
+<input type="button" id="next" value="Next >>" style="visibility: visible;">
+</div>
+<div id="container">
+	<textarea id="code" wrap="off" style="height: 500px; display: none;"></textarea>
+	<ol id="results"></ol>
+	<p id="cite" style="display: block;">Double-click the code to edit the tutorial and try your own code.</p>
+</div>
+</form>
+</div>
+<dl style="display: none;">
+<dt>The Constructor Pattern</dt>
+<dd></dd>
+<dt>Creating and using Objects</dt>
+<dd></dd>
+<dt>Object : </dt>
+<dd><pre>
+		/* is an unordered list of primitive data types stored as name-value pairs
+		* primitive types in JavaScript are numbers, strings, booleans (true and false), null, and undefined
+		* Every Object has properties & functions and is mutable
+		* A property has a name and value
+		       - name can be any string including empty string, value can be any value except undefined
+		* Different ways of creating object :*/
+		    //1)Creating Object through literal
+			var empty_obj={};
+			var me = {
+						 "first-name": "Arun",
+						 "last-name": "Krish"
+					 };
+
+			
+			//2)Creating with Object.create
+			var obj= Object.create(null);
+			
+			//3)Creating using new keyword
+			function Person(){}
+			var obj=new Person();
+</pre></dd>
+<dt>Objects with Constructors eg:</dt>	
+<dd><pre>function Person(fname,lname){
+ //Assigning values through constructor
+ this.fname=fname;
+ this.lname=lname;
+ //functions
+ this.sayHi=function(){
+  return "  :  Hi! I am " + this.fname + " " + this.lname;
+ }
+}
+//Creating person instance
+var p=new Person("Arun","Krish");
+log(p.sayHi());
+//Creating Second person instance
+var p=new Person("Ram","Krish");
+log(p.sayHi());</pre></dd>
+<dt>Objects with Literals eg:</dt>	
+<dd><pre>
+//Creating person instance
+var p={
+		fname : "Arun",
+		lname : "Krish",
+		sayHi:function(){
+			return "  :  Hi! I am " + this.fname + " " + this.lname;
+		}
+		}
+log(p.sayHi());
+//Creating Second person instance
+var p={
+		fname : "Ram",
+		lname : "Krish",
+		sayHi:function(){
+			return "  :  Hi! I am " + this.fname + " " + this.lname;
+		}
+		}
+log(p.sayHi());
+</pre></dd>
+<dt>Objects </dt>
+<dd><pre>
+	* Object Retrieval :
+		    - uses [] or the . operator, . is preferred
+			- eg : person["fname"]	// "Arun"
+			- person["middle-name"] // gives undefined
+	* Update :
+			- Value can be updated eg : person['fname'] = 'Shyam';
+	* Reference
+			- objects are passed around by reference, are never copied
+			- eg : 
+				var x = person;
+				x.nickname = 'Brownie';
+				var y = person.nickname; // y is 'Brownie' as both person & x are references to same object
+</pre></dd>
+<dt>Objects using Prototyping </dt>
+<dd></dd>
+<dt>Prototype</dt>
+<dd><pre>
+/*	
+* 	is an object from which other objects inherit properties
+* 	used to add custom properties to objects
+* 	used to add custom methods to objects
+*/	
+	function Pet(name, species){
+		this.name = name;
+		this.species = species;
+	}
+	function view(){
+		return this.name + " is a " + this.species + "!";
+	}
+	Pet.prototype.view = view;
+	var pet1 = new Pet('Gabriella', 'Dog');
+	log(" : " + pet1.view()); //Outputs "Gabriella is a Dog!"
+
+/**
+	All 'Pet' objects now have access to the view method using prototype.
+*/
+</pre></dd>
+
+<dt>Prototype - another example</dt>
+<dd><pre>
+/*	
+* 	Dog object to inherit methods and Properties of Pet object + special function for Dog
+*/	
+	function Pet(name, species){
+		this.name = name;
+		this.species = species;
+	}
+	function view(){
+		return this.name + " is a " + this.species + "!";
+	}
+	Pet.prototype.view = view;
+	function Dog(name){
+		Pet.call(this, name, "dog");
+	}
+	Dog.prototype = new Pet();
+	Dog.prototype.bark = function(){
+		log("Woof!");
+	}
+	
+	var pet1 = new Pet('Trudy', 'Bird');
+	var pet2 = new Dog('Gabriella');
+	log(pet2.view()); // Outputs "Gabriella is a Dog!"
+	pet2.bark(); // Outputs "Woof!"
+	pet1.bark(); // Error
+
+</pre></dd>
+
+<dt>Prototype chain</dt>
+<dd><pre>
+
+	function Pet(name, species){
+		this.name = name;
+		this.species = species;
+	}
+	function view(){
+		return this.name + " is a " + this.species + "!";
+	}
+	Pet.prototype.view = view;
+	function Dog(name){
+		Pet.call(this, name, "dog");
+	}
+	Dog.prototype = new Pet();
+	Dog.prototype.bark = function(){
+		log("  : Woof!");
+	}
+	
+	var pet1 = new Pet('Trudy', 'Bird');
+	var pet2 = new Dog('Gabriella');
+
+Object.prototype.whoAmI = function(){
+    log("  : I am an object!");
+}
+pet1.whoAmI(); //Outputs 'I am an object!'
+pet2.whoAmI(); //Outputs 'I am an object!'
+
+</pre></dd>
+
+
+<dt>Access Control </dt>
+<dd></dd>
+<dt>Access Control</dt>
+<dd><pre>
+/*
+	* No direct means to control access to internal variables 
+	* hence restrict access to some variables
+	* To declare and use a variable as private, there are two steps required:
+			- Declare a new variable within the constructor using the var statement.
+			- Create an anonymous function within the constructor, and assign it as a method for an object.
+*/	
+	function MyObject()
+	{
+	   this.publicNumber = 10;  // Public field.
+	   var privateNumber = 20;  // Private variable.  
+	 
+	   this.getPrivateNumber = function() 
+	   {
+		  return privateNumber;
+	   }
+	}
+ 
+testObject = new MyObject();
+</pre></dd>
+
+<dt>The Module Pattern </dt>
+<dd></dd>
+<dt>The Module Pattern </dt>
+<dd><pre>
+/* Modules : Modules are an integral piece of any robust application's architecture and 
+typically help in keeping the units of code for a project both cleanly separated and organized
+In JavaScript, there are several options for implementing modules. These include:
+
+ >The Module pattern
+>Object literal notation
+>AMD modules
+>CommonJS modules
+>ECMAScript Harmony modules*/
+</pre>
+</dd>
+<dt>A simple module</dt>
+<dd><pre>
+
+var myModule = {
+ 
+  myProperty: "someValue",
+  myConfig: {
+    useCaching: true,
+    language: "en"
+  },
+ 
+  // output a value based on the current configuration
+  reportMyConfig: function () {
+    console.log( "Caching is: " + ( this.myConfig.useCaching  ? "enabled" : "disabled") );
+  },
+ 
+  // override the current configuration
+  updateMyConfig: function( newConfig ) {
+    if ( typeof newConfig === "object" ) {
+      this.myConfig = newConfig;
+      console.log( this.myConfig.language );
+    }
+  }
+};
+ 
+// Outputs: Caching is: enabled
+myModule.reportMyConfig();
+ 
+// Outputs: fr
+myModule.updateMyConfig({
+  language: "fr",
+  useCaching: false
+});
+ 
+// Outputs: Caching is: disabled
+myModule.reportMyConfig();
+</pre>
+</dd>
+<dt>The Module Pattern </dt>
+<dd><pre>
+/* 
+# The Module pattern was originally defined as a way to provide both private and
+public encapsulation for classes in conventional software engineering.
+
+# In JavaScript, the Module pattern is used to further emulate the concept of 
+classes in such a way that we're able to include both public/private methods 
+and variables inside a single object, thus shielding particular parts from the 
+global scope
+
+Privacy : The Module pattern encapsulates "privacy", state and organization using closures.
+It provides a way of wrapping a mix of public and private methods and variables, protecting 
+pieces from leaking into the global scope and accidentally colliding with another developer's 
+interface. With this pattern, only a public API is returned, keeping everything else within 
+the closure private.
+*/
+</pre>
+</dd>
+<dt>Module pattern - Example</dt>
+<dd><pre>
+var testModule = (function () {
+  var counter = 0;
+ 
+  return {
+    incrementCounter: function () {
+      return counter++;
+    },
+ 
+    resetCounter: function () {
+      console.log( "counter value prior to reset: " + counter );
+      counter = 0;
+    }
+  };
+ 
+})();
+ 
+// Increment our counter
+testModule.incrementCounter();
+ 
+// Check the counter value and reset
+// Outputs: 1
+testModule.resetCounter();
+
+/* Here, other parts of the code are unable to directly read the value of our
+incrementCounter() or resetCounter(). The counter variable is actually fully
+shielded from our global scope so it acts just like a private variable would
+- its existence is limited to within the module's closure so that the only code
+able to access its scope are our two functions. Our methods are effectively
+namespaced so in the test section of our code, we need to prefix any calls with
+the name of the module (e.g. "testModule").*/
+</pre>
+</dd>
+<dt>Module Pattern Variations - Import Mixins</dt>
+<dd><pre>
+Import mixins : This variation of the pattern demonstrates how globals 
+(e.g jQuery, Underscore) can be passed in as arguments to our module's
+anonymous function. This effectively allows us to import them and locally
+alias them as we wish.
+
+Example :
+*/
+// Global module
+var myModule = (function ( jQ, _ ) {
+ 
+    function privateMethod1(){
+        jQ(".container").html("test");
+    }
+ 
+    function privateMethod2(){
+      console.log( _.min([10, 5, 100, 2, 1000]) );
+    }
+ 
+    return{
+        publicMethod: function(){
+            privateMethod1();
+        }
+    };
+ 
+// Pull in jQuery and Underscore
+})( jQuery, _ );
+ 
+myModule.publicMethod();
+</pre>
+</dd>
+<dt>Module Pattern Variations - Exports</dt>
+<dd>
+/* 
+Exports : This variation allows us to declare globals without consuming
+them and could similarly support the concept of global imports
+
+Example : 
+*/
+// Global module
+var myModule = (function () {
+ 
+  // Module object 
+  var module = {},
+    privateVariable = "Hello World";
+ 
+  function privateMethod() {
+    // ...
+  }
+ 
+  module.publicProperty = "Foobar";
+  module.publicMethod = function () {
+    console.log( privateVariable );
+  };
+ 
+  return module;
+ 
+})();
+</pre>
+</dd>
+<dt>Module Pattern in DOJO</dt>
+<dd><pre>
+var store = window.store || {};
+ 
+if ( !store["basket"] ) {
+  store.basket = {};
+}
+ 
+if ( !store.basket["core"] ) {
+  store.basket.core = {};
+}
+ 
+store.basket.core = {
+  // ...rest of our logic
+};
+</pre></dd>
+<dt>Module Pattern in DOJO 1.7 (AMD Compatible)</dt>
+<dd><pre>
+  require(["dojo/_base/customStore"], function( store ){
+ 
+  // using dojo.setObject()
+  store.setObject( "basket.core", (function() {
+ 
+      var basket = [];
+ 
+      function privateMethod() {
+          console.log(basket);
+      }
+ 
+      return {
+          publicMethod: function(){
+                  privateMethod();
+          }
+      };
+ 
+  })());
+ 
+});
+</pre></dd>
+<dt>Module Pattern in EXTJS</dt>
+<dd><pre>
+  // create namespace
+Ext.namespace("myNameSpace");
+ 
+// create application
+myNameSpace.app = function () {
+ 
+  // do NOT access DOM from here; elements don't exist yet
+  // private variables
+ 
+  var btn1,
+      privVar1 = 11;
+ 
+  // private functions
+  var btn1Handler = function ( button, event ) {
+      console.log( "privVar1=" + privVar1 );
+      console.log( "this.btn1Text=" + this.btn1Text );
+    };
+ 
+  // public space
+  return {
+    // public properties, e.g. strings to translate
+    btn1Text: "Button 1",
+ 
+    // public methods
+    init: function () {
+ 
+      if ( Ext.Ext2 ) {
+ 
+        btn1 = new Ext.Button({
+          renderTo: "btn1-ct",
+          text: this.btn1Text,
+          handler: btn1Handler
+        });
+ 
+      } else {
+ 
+        btn1 = new Ext.Button( "btn1-ct", {
+          text: this.btn1Text,
+          handler: btn1Handler
+        });
+ 
+      }
+    }
+  };
+}();
+</pre></dd>
+<dt>Module Pattern in YUI</dt>
+<dd><pre>
+Y.namespace( "store.basket" ) ;
+Y.store.basket = (function () {
+ 
+    var myPrivateVar, myPrivateMethod;
+ 
+    // private variables:
+    myPrivateVar = "I can be accessed only within Y.store.basket.";
+ 
+    // private method:
+    myPrivateMethod = function () {
+        Y.log( "I can be accessed only from within YAHOO.store.basket" );
+    }
+ 
+    return {
+        myPublicProperty: "I'm a public property.",
+ 
+        myPublicMethod: function () {
+            Y.log( "I'm a public method." );
+ 
+            // Within basket, I can access "private" vars and methods:
+            Y.log( myPrivateVar );
+            Y.log( myPrivateMethod() );
+ 
+            // The native scope of myPublicMethod is store so we can
+            // access public members using "this":
+            Y.log( this.myPublicProperty );
+        }
+    };
+ 
+})();
+</pre></dd>
+<dt>Module Pattern in jQuery</dt>
+<dd><pre>
+function library( module ) {
+ 
+  $( function() {
+    if ( module.init ) {
+      module.init();
+    }
+  });
+ 
+  return module;
+}
+ 
+var myLibrary = library(function () {
+ 
+  return {
+    init: function () {
+      // module implementation
+    }
+  };
+}());
+</pre></dt>
+<dt>Module Pattern - Advantages and Disadvantages</dt>
+<dd><pre>
+/*
+Advantages : 
+#it's a lot cleaner for developers coming from an 
+object-oriented background than the idea of true encapsulation, 
+at least from a JavaScript perspective.
+
+#it supports private data - so, in the Module pattern, public parts 
+of our code are able to touch the private parts, however the outside 
+world is unable to touch the class's private parts.
+
+Disadvantages : 
+#The disadvantages of the Module pattern are that as 
+we access both public and private members differently, when we wish 
+to change visibility, we actually have to make changes to each place
+the member was used.
+
+#We also can't access private members in methods that are added to 
+the object at a later point.
+
+#Other disadvantages include the inability to create automated unit
+tests for private members and additional complexity when bugs require hot fixes
+*/
+</pre></dd>
+<dt>The Revealing Module Pattern</dt>
+<dd></dd>
+<dt>The Revealing Module Pattern</dt>
+<dd><pre>
+/* It is a slightly improved version of Module Pattern called as 
+Christian Heilmann's Revealing Module pattern.
+
+The Revealing Module pattern came about as Heilmann was frustrated 
+with the fact that he had to repeat the name of the main object when 
+we wanted to call one public method from another or access public variables.
+He also disliked the Module pattern's requirement for having to switch to 
+object literal notation for the things he wished to make public.
+
+The result of his efforts was an updated pattern where we would simply 
+define all of our functions and variables in the private scope and
+return an anonymous object with pointers to the private functionality
+we wished to reveal as public.
+
+Example :
+*/
+</pre></dd>
+<dt>Revealing Module Pattern - Example</dt>
+<dd><pre>
+var myRevealingModule = (function () {
+ 
+        var privateVar = "Ram Labs",
+            publicVar  = "Arun Krish!";
+ 
+        function privateFunction() {
+            console.log( "Name:" + privateVar );
+        }
+ 
+        function publicSetName( strName ) {
+            privateVar = strName;
+        }
+ 
+        function publicGetName() {
+            privateFunction();
+        }
+ 
+ 
+        // Reveal public pointers to
+        // private functions and properties
+ 
+        return {
+            setName: publicSetName,
+            greeting: publicVar,
+            getName: publicGetName
+        };
+ 
+    })();
+ 
+myRevealingModule.setName( "ramselabs" );
+</pre></dd>
+<dt>Revealing Module Pattern - Advantages and Disadvantages</dt>
+<dd>
+/*
+Advantages:
+
+This pattern allows the syntax of our scripts to be more consistent. 
+It also makes it more clear at the end of the module which of our functions 
+and variables may be accessed publicly which eases readability.
+
+Disadvantages
+
+A disadvantage of this pattern is that if a private function refers to a 
+public function, that public function can't be overridden if a patch is necessary.
+This is because the private function will continue to refer to the private
+implementation and the pattern doesn't apply to public members, only to functions.
+*/
+</pre></dd>
+<dt>The Singleton Pattern </dt>
+<dd></dd>
+<dt>The Singleton Pattern</dt>
+<dd><pre>
+/*
+The Singleton pattern is thus known because it restricts instantiation of 
+a class to a single object. Classically, the Singleton pattern can be 
+implemented by creating a class with a method that creates a new instance 
+of the class if one doesn't exist. In the event of an instance already existing, 
+it simply returns a reference to that object.
+
+In JavaScript, Singletons serve as a shared resource namespace which isolate
+implementation code from the global namespace so as to provide a single point
+of access for functions.
+
+Example :
+*/
+var mySingleton = (function () {
+ 
+  // Instance stores a reference to the Singleton
+  var instance;
+ 
+  function init() {
+ 
+    // Singleton
+ 
+    // Private methods and variables
+    function privateMethod(){
+        console.log( "I am private" );
+    }
+ 
+    var privateVariable = "Im also private";
+ 
+    var privateRandomNumber = Math.random();
+ 
+    return {
+ 
+      // Public methods and variables
+      publicMethod: function () {
+        console.log( "The public can see me!" );
+      },
+ 
+      publicProperty: "I am also public",
+ 
+      getRandomNumber: function() {
+        return privateRandomNumber;
+      }
+ 
+    };
+ 
+  };
+ 
+  return {
+ 
+    // Get the Singleton instance if one exists
+    // or create one if it doesn't
+    getInstance: function () {
+ 
+      if ( !instance ) {
+        instance = init();
+      }
+ 
+      return instance;
+    }
+ 
+  };
+ 
+})();
+</pre></dd>
+<dt>Singleton - Another implementation</dt>
+<dd><pre>
+var myBadSingleton = (function () {
+ 
+  // Instance stores a reference to the Singleton
+  var instance;
+ 
+  function init() {
+ 
+    // Singleton
+ 
+    var privateRandomNumber = Math.random();
+ 
+    return {
+ 
+      getRandomNumber: function() {
+        return privateRandomNumber;
+      }
+ 
+    };
+ 
+  };
+ 
+  return {
+ 
+    // Always create a new Singleton instance
+    getInstance: function () {
+ 
+      instance = init();
+ 
+      return instance;
+    }
+ 
+  };
+ 
+})();
+<dt>Comparison of previous 2 approaches</dt>
+<dd><pre> 
+var singleA = mySingleton.getInstance();
+var singleB = mySingleton.getInstance();
+console.log( singleA.getRandomNumber() === singleB.getRandomNumber() ); // true
+ 
+var badSingleA = myBadSingleton.getInstance();
+var badSingleB = myBadSingleton.getInstance();
+console.log( badSingleA.getRandomNumber() !== badSingleB.getRandomNumber() ); // true
+ 
+// Note: as we are working with random numbers, there is a
+// mathematical possibility both numbers will be the same,
+// however unlikely. The above example should otherwise still
+// be valid.
+</pre></dd>
+<dt>Applicability of Singleton</dt>
+<dd><pre>
+/*
+In the GoF book, the applicability of the Singleton pattern is described as 
+follows:
+
+#There must be exactly one instance of a class, and it must be accessible
+to clients from a well-known access point.
+
+#When the sole instance should be extensible by subclassing, and clients
+should be able to use an extended instance without modifying their code.
+
+The second of these points refers to a case where we might need code such as:
+*/
+mySingleton.getInstance = function(){
+  if ( this._instance == null ) {
+    if ( isFoo() ) {
+       this._instance = new FooSingleton();
+    } else {
+       this._instance = new BasicSingleton();
+    }
+  }
+  return this._instance;
+};
+/*
+Here, getInstance becomes a little like a Factory method and we don't need to update
+each point in our code accessing it. FooSingleton above would be a subclass of
+BasicSingleton and implement the same interface.
+*/
+</pre></dd>
+
+<dt>The Observer Pattern</dt>
+<dd></dd>
+<dt>The Observer Pattern</dt>
+<dd><pre>
+/*
+The definition of the Observer pattern provided in the GoF book, 
+Design Patterns: Elements of Reusable Object-Oriented Software, is:
+
+"One or more observers are interested in the state of a subject and 
+register their interest with the subject by attaching themselves.
+When something changes in our subject that the observer may be
+interested in, a notify message is sent which calls the update
+method in each observer. When the observer is no longer interested
+in the subject's state, they can simply detach themselves."
+</pre></dd>
+<dt>Components in Observer pattern</dt>
+<dd><pre>
+/*
+#Subject: maintains a list of observers, facilitates adding or removing observers
+
+#Observer: provides an update interface for objects that needs to be notified of a
+Subject's changes of state
+
+#ConcreteSubject: broadcasts notifications to observers on changes of state,
+stores the state of ConcreteObservers
+
+#ConcreteObserver: stores a reference to the ConcreteSubject, implements an update
+interface for the Observer to ensure state is consistent with the Subject's
+
+Example : First, let's model the list of dependent Observers a subject may have:
+*/
+</pre><dd>
+<dt>Observer Pattern - Example</dt>
+<dd><pre>
+function ObserverList(){
+  this.observerList = [];
+}
+ 
+ObserverList.prototype.add = function( obj ){
+  return this.observerList.push( obj );
+};
+ 
+ObserverList.prototype.count = function(){
+  return this.observerList.length;
+};
+ 
+ObserverList.prototype.get = function( index ){
+  if( index > -1 && index < this.observerList.length ){
+    return this.observerList[ index ];
+  }
+};
+ 
+ObserverList.prototype.indexOf = function( obj, startIndex ){
+  var i = startIndex;
+ 
+  while( i < this.observerList.length ){
+    if( this.observerList[i] === obj ){
+      return i;
+    }
+    i++;
+  }
+ 
+  return -1;
+};
+ 
+ObserverList.prototype.removeAt = function( index ){
+  this.observerList.splice( index, 1 );
+};
+</pre></dd>
+<dt>Observer Pattern - Subject</dt>
+<dd><pre>
+/*
+Next, let's model the Subject and the ability to add, remove or notify
+observers on the observer list.
+*/
+function Subject(){
+  this.observers = new ObserverList();
+}
+ 
+Subject.prototype.addObserver = function( observer ){
+  this.observers.add( observer );
+};
+ 
+Subject.prototype.removeObserver = function( observer ){
+  this.observers.removeAt( this.observers.indexOf( observer, 0 ) );
+};
+ 
+Subject.prototype.notify = function( context ){
+  var observerCount = this.observers.count();
+  for(var i=0; i < observerCount; i++){
+    this.observers.get(i).update( context );
+  }
+};
+/*
+We then define a skeleton for creating new Observers. The update 
+functionality here will be overwritten later with custom behaviour.
+*/
+// The Observer
+function Observer(){
+  this.update = function(){
+    // ...
+  };
+}
+</pre></dd>
+<dt>Observer Pattern - Demonstration</dt>
+<dd><pre>
+/*
+A button for adding new observable checkboxes to the page
+A control checkbox which will act as a subject, notifying other checkboxes 
+they should be checked
+A container for the new checkboxes being added
+We then define ConcreteSubject and ConcreteObserver handlers for 
+both adding new observers to the page and implementing the updating interface. 
+
+HTML:
+*/
+<button id="addNewObserver">Add New Observer checkbox</button>
+<input id="mainCheckbox" type="checkbox"/>
+<div id="observersContainer"></div>
+/* 
+Sample script:
+*/
+// Extend an object with an extension
+function extend( extension, obj ){
+  for ( var key in extension ){
+    obj[key] = extension[key];
+  }
+}
+ 
+// References to our DOM elements
+ 
+var controlCheckbox = document.getElementById( "mainCheckbox" ),
+  addBtn = document.getElementById( "addNewObserver" ),
+  container = document.getElementById( "observersContainer" );
+ 
+ 
+// Concrete Subject
+ 
+// Extend the controlling checkbox with the Subject class
+extend( new Subject(), controlCheckbox );
+ 
+// Clicking the checkbox will trigger notifications to its observers
+controlCheckbox.onclick = function(){
+  controlCheckbox.notify( controlCheckbox.checked );
+};
+ 
+addBtn.onclick = addNewObserver;
+ 
+// Concrete Observer
+ 
+function addNewObserver(){
+ 
+  // Create a new checkbox to be added
+  var check  = document.createElement( "input" );
+  check.type = "checkbox";
+ 
+  // Extend the checkbox with the Observer class
+  extend( new Observer(), check );
+ 
+  // Override with custom update behaviour
+  check.update = function( value ){
+    this.checked = value;
+  };
+ 
+  // Add the new observer to our list of observers
+  // for our main subject
+  controlCheckbox.addObserver( check );
+ 
+  // Append the item to the container
+  container.appendChild( check );
+}
+</pre></dd>
+<dt>Differences Between The Observer And Publish/Subscribe Pattern</dt>
+<dd><pre>
+/*
+Whilst the Observer pattern is useful to be aware of, quite often in the 
+JavaScript world, we'll find it commonly implemented using a variation known 
+as the Publish/Subscribe pattern. Whilst very similar, there are differences 
+between these patterns worth noting.
+
+The Observer pattern requires that the observer (or object) wishing to receive
+topic notifications must subscribe this interest to the object firing the event (the subject).
+
+The Publish/Subscribe pattern however uses a topic/event channel which sits 
+between the objects wishing to receive notifications (subscribers) and the 
+object firing the event (the publisher). This event system allows code to 
+define application specific events which can pass custom arguments containing 
+values needed by the subscriber. The idea here is to avoid dependencies between
+the subscriber and publisher.
+
+This differs from the Observer pattern as it allows any subscriber implementing
+an appropriate event handler to register for and receive topic notifications
+broadcast by the publisher.
+*/
+</pre></dd>
+<dt>Publish/Subscribe - Example</dt>
+<dd><pre>
+/*
+Example :
+Here is an example of how one might use the Publish/Subscribe if provided with
+a functional implementation powering publish(),subscribe() and unsubscribe()
+behind the scenes:
+
+*/
+// A very simple new mail handler
+ 
+// A count of the number of messages received
+var mailCounter = 0;
+ 
+// Initialize subscribers that will listen out for a topic
+// with the name "inbox/newMessage".
+ 
+// Render a preview of new messages
+var subscriber1 = subscribe( "inbox/newMessage", function( topic, data ) {
+ 
+  // Log the topic for debugging purposes
+  console.log( "A new message was received: ", topic );
+ 
+  // Use the data that was passed from our subject
+  // to display a message preview to the user
+  $( ".messageSender" ).html( data.sender );
+  $( ".messagePreview" ).html( data.body );
+ 
+});
+ 
+// Here's another subscriber using the same data to perform
+// a different task.
+ 
+// Update the counter displaying the number of new
+// messages received via the publisher
+ 
+var subscriber2 = subscribe( "inbox/newMessage", function( topic, data ) {
+ 
+  $('.newMessageCounter').html( ++mailCounter );
+ 
+});
+ 
+publish( "inbox/newMessage", [{
+  sender:"hello@google.com",
+  body: "Hey there! How are you doing today?"
+}]);
+ 
+// We could then at a later point unsubscribe our subscribers
+// from receiving any new topic notifications as follows:
+// unsubscribe( subscriber1 );
+// unsubscribe( subscriber2 );
+
+/*
+The general idea here is the promotion of loose coupling. Rather 
+than single objects calling on the methods of other objects directly,
+they instead subscribe to a specific task or activity of another object
+and are notified when it occurs.
+*/
+</pre></dd>
+<dt>Observer and Publish/Subscribe Patterns - Advantages and Disadvantages</dt>
+<dd><pre>
+/*
+Advantages
+
+Help us identify what layers containing direct relationships 
+which could instead be replaced with sets of subjects and observers. 
+This effectively could be used to break down an application into smaller,
+more loosely coupled blocks to improve code management and potentials for 
+re-use.
+
+Disadvantages :
+
+In Publish/Subscribe, by decoupling publishers from subscribers, it can sometimes become difficult to obtain guarantees that particular parts of our applications are functioning as we may expect.
+*/
+</pre></dd>
+<dt>Publish/Subscribe Implementations</dt>
+<dd><pre>
+/*
+Publish/Subscribe fits in very well in JavaScript ecosystems, largely 
+because at the core, ECMAScript implementations are event driven.
+This is particularly true in browser environments as the DOM uses
+events as its main interaction API for scripting.
+
+Luckily, popular JavaScript libraries such as dojo, jQuery (custom events) 
+and YUI already have utilities that can assist in easily implementing a 
+Publish/Subscribe system with very little effort. Below we can see some 
+examples of this.
+*/
+
+// Publish
+ 
+// jQuery: $(obj).trigger("channel", [arg1, arg2, arg3]);
+$( el ).trigger( "/login", [{username:"test", userData:"test"}] );
+ 
+// Dojo: dojo.publish("channel", [arg1, arg2, arg3] );
+dojo.publish( "/login", [{username:"test", userData:"test"}] );
+ 
+// YUI: el.publish("channel", [arg1, arg2, arg3]);
+el.publish( "/login", {username:"test", userData:"test"} );
+ 
+ 
+// Subscribe
+ 
+// jQuery: $(obj).on( "channel", [data], fn );
+$( el ).on( "/login", function( event ){...} );
+ 
+// Dojo: dojo.subscribe( "channel", fn);
+var handle = dojo.subscribe( "/login", function(data){..} );
+ 
+// YUI: el.on("channel", handler);
+el.on( "/login", function( data ){...} );
+ 
+ 
+// Unsubscribe
+ 
+// jQuery: $(obj).off( "channel" );
+$( el ).off( "/login" );
+ 
+// Dojo: dojo.unsubscribe( handle );
+dojo.unsubscribe( handle );
+ 
+// YUI: el.detach("channel");
+el.detach( "/login" );
+</pre></dd>
+
+<dt>The Mediator Pattern</dt>
+<dd></dd>
+<dt>The Mediator Pattern</dt>
+<dd><pre>
+/*
+The dictionary refers to a mediator as a neutral party that assists 
+in negotiations and conflict resolution. In our world, a mediator is 
+a behavioral design pattern that allows us to expose a unified 
+interface through which the different parts of a system may communicate.
+
+The Mediator promotes loose coupling by ensuring that instead of 
+components referring to each other explicitly, their interaction is 
+handled through this central point. This can help us decouple systems 
+and improve the potential for component reusability.
+
+Another analogy would be DOM event bubbling and event delegation.
+If all subscriptions in a system are made against the document rather
+than individual nodes, the document effectively serves as a Mediator.
+Instead of binding to the events of the individual nodes, a higher
+level object is given the responsibility of notifying subscribers
+about interaction events.
+
+When it comes to the Mediator and Event Aggregator patterns, there are
+some times where it may look like the patterns are interchangeable due
+to implementation similarities. However, the semantics and intent of 
+these patterns are very different.
+*/
+</pre></dd>
+<dt>A Simple Mediator</dt>
+<dd><pre>
+/*
+A Mediator is an object that coordinates interactions (logic and behavior) between multiple objects. It makes decisions on when to call which objects, based on the actions (or inaction) of other objects and input.
+
+You can write a mediator using a single line of code:
+*/
+var mediator = {};
+/*
+The purpose of the mediator is to 
+control the workflow between objects and we really don't need anything 
+more than an object literal to do this.
+*/
+var orgChart = {
+ 
+  addNewEmployee: function(){
+ 
+    // getEmployeeDetail provides a view that users interact with
+    var employeeDetail = this.getEmployeeDetail();
+ 
+    // when the employee detail is complete, the mediator (the 'orgchart' object)
+    // decides what should happen next
+    employeeDetail.on("complete", function(employee){
+ 
+      // set up additional objects that have additional events, which are used
+      // by the mediator to do additional things
+      var managerSelector = this.selectManager(employee);
+      managerSelector.on("save", function(employee){
+        employee.save();
+      });
+ 
+    });
+  },
+ 
+  // ...
+}
+</pre></dd>
+<dt>Mediator as Workflow</dt>
+<dd><pre>
+  /*
+Previously referred to this type of object as a "workflow" object in the past,
+but the truth is that it is a mediator. It is an object that handles the
+workflow between many other objects, aggregating the responsibility of that
+workflow knowledge into a single object. The result is workflow that is
+easier to understand and maintain.
+*/
+</pre></dd>
+<dt>Event Aggregator (Pub/Sub) And Mediator Together :
+The crux of the difference between an event aggregator and a mediator,
+and why these pattern names should not be interchanged with each other, 
+is illustrated best by showing how they can be used together. 
+The menu example for an event aggregator is the perfect place to introduce 
+a mediator as well.
+*/
+var MenuItem = MyFrameworkView.extend({
+ 
+  events: {
+    "click .thatThing": "clickedIt"
+  },
+ 
+  clickedIt: function(e){
+    e.preventDefault();
+ 
+    // assume this triggers "menu:click:foo"
+    MyFramework.trigger("menu:click:" + this.model.get("name"));
+  }
+ 
+});
+ 
+// ... somewhere else in the app
+ 
+var MyWorkflow = function(){
+  MyFramework.on("menu:click:foo", this.doStuff, this);
+};
+ 
+MyWorkflow.prototype.doStuff = function(){
+  // instantiate multiple objects here.
+  // set up event handlers for those objects.
+  // coordinate all of the objects into a meaningful workflow.
+};
+
+/*
+In this example, when the MenuItem with the right model is clicked, 
+the "menu:click:foo" event will be triggered. An instance of the 
+"MyWorkflow" object, assuming one is already instantiated, will 
+handle this specific event and will coordinate all of the objects 
+that it knows about, to create the desired user experience and workflow
+*/
+<dt>Similarities And Differences with event aggregator pattern</dt>
+<dd><pre>
+The similarities boil down to two primary items: events and third-party objects. 
+
+Events :
+Both the event aggregator and mediator use events, in the above examples. 
+An event aggregator obviously deals with events - it's in the name after all. 
+The mediator only uses events because it makes life easy when dealing with 
+modern JavaScript webapp frameworks.
+
+Third-Party Objects :
+Both the event aggregator and mediator, by design, use a third-party object 
+to facilitate things. The event aggregator itself is a third-party to the 
+event publisher and the event subscriber. It acts as a central hub for 
+events to pass through. The mediator is also a third party to other objects,though.
+
+Relationships: When To Use Which :
+Event Aggregator Use :
+In general, an event aggregator is used when you either have too many objects to listen to directly, or you have objects that are entirely unrelated.
+
+Mediator Use :
+A mediator is best applied when two or more objects have an indirect working 
+relationship, and business logic or workflow needs to dictate the interactions
+and coordination of these objects.
+*/
+</pre></dd>
+<dt>Advantages & Disadvantages</dt>
+<dd><pre>
+  /*
+Advantages:
+The largest benefit of the Mediator pattern is that it reduces the 
+communication channels needed between objects or components in a system 
+from many to many to just many to one. Adding new publishers and subscribers 
+is relatively easy due to the level of decoupling present.
+
+Disadvantages:
+Perhaps the biggest downside of using the pattern is that it can introduce 
+a single point of failure. Placing a Mediator between modules can also cause 
+a performance hit as they are always communicating indirectly. Because of 
+the nature of loose coupling, it's difficult to establish how a system might 
+react by only looking at the broadcasts.
+
+At the end of the day, tight coupling causes all kinds of headaches and 
+this is just another alternative solution, but one which can work very 
+well if implemented correctly.
+*/
+</pre></dd>
+<dt>The Prototype Pattern </dt>
+<dd></dd>
+<dt>The Prototype Pattern</dt>
+<dd><pre>
+/*
+The GoF refer to the prototype pattern as one which creates objects based 
+on a template of an existing object through cloning.
+
+We can think of the prototype pattern as being based on prototypal inheritance 
+where we create objects which act as prototypes for other objects. 
+The prototype object itself is effectively used as a blueprint for each object 
+the constructor creates. If the prototype of the constructor function used contains 
+a property called name for example, then each object created by that same 
+constructor will also have this same property.
+
+Real prototypal inheritance, as defined in the ECMAScript 5 standard, 
+requires the use of Object.create (which we previously looked at earlier in this section).
+To remind ourselves, Object.create creates an object which has a 
+specified prototype and optionally contains specified properties 
+as well (e.g Object.create( prototype, optionalDescriptorObjects )).
+
+Example :
+*/
+</pre></dd>
+<dt>Prototype Pattern - Example</dt>
+<dd><pre>
+var myCar = {
+ 
+  name: "Ford Escort",
+ 
+  drive: function () {
+    console.log( "Weeee. I'm driving!" );
+  },
+ 
+  panic: function () {
+    console.log( "Wait. How do you stop this thing?" );
+  }
+ 
+};
+ 
+// Use Object.create to instantiate a new car
+var yourCar = Object.create( myCar );
+ 
+// Now we can see that one is a prototype of the other
+console.log( yourCar.name );
+</pre></dd>
+<dt>Object.create with additional parameters</dt>
+<dd><pre>
+/*
+Object.create also allows us to easily implement advanced concepts 
+such as differential inheritance where objects are able to directly 
+inherit from other objects. We saw earlier that Object.create allows 
+us to initialise object properties using the second supplied argument.
+
+Example :
+*/
+var vehicle = {
+  getModel: function () {
+    console.log( "The model of this vehicle is.." + this.model );
+  }
+};
+ 
+var car = Object.create(vehicle, {
+ 
+  "id": {
+    value: MY_GLOBAL.nextId(),
+    // writable:false, configurable:false by default
+    enumerable: true
+  },
+ 
+  "model": {
+    value: "Ford",
+    enumerable: true
+  }
+ 
+});
+/*
+Here the properties can be initialized on the second argument of Object.create 
+using an object literal with a syntax similar to that used by the Object.defineProperties 
+and Object.defineProperty methods that we looked at previously.
+*/
+<dt>Prototype without using Object.create</dt>
+<dd><pre>
+  /*
+If we wish to implement the prototype pattern without directly using 
+Object.create, we can simulate the pattern as per the above example as follows:
+*/
+var vehiclePrototype = {
+ 
+  init: function ( carModel ) {
+    this.model = carModel;
+  },
+ 
+  getModel: function () {
+    console.log( "The model of this vehicle is.." + this.model);
+  }
+};
+ 
+ 
+function vehicle( model ) {
+ 
+  function F() {};
+  F.prototype = vehiclePrototype;
+ 
+  var f = new F();
+ 
+  f.init( model );
+  return f;
+ 
+}
+ 
+var car = vehicle( "Ford Escort" );
+car.getModel();
+/*
+Note: This alternative does not allow the user to define read-only properties in the same manner (as the vehiclePrototype may be altered if not careful).
+*/
+</pre></dd>
+
+<dt>The Command Pattern</dt>
+<dd></dd>
+<dt>The Command Pattern</dt>
+<dd><pre>
+/*
+The Command pattern aims to encapsulate method invocation, requests or 
+operations into a single object and gives us the ability to both 
+parameterize and pass method calls around that can be executed at 
+our discretion. In addition, it enables us to decouple objects invoking 
+the action from the objects which implement them, giving us a greater 
+degree of overall flexibility in swapping out concrete classes (objects).
+
+The general idea behind the Command pattern is that it provides us a means 
+to separate the responsibilities of issuing commands from anything 
+executing commands, delegating this responsibility to different objects instead.
+
+Implementation wise, simple command objects bind together both an action 
+and the object wishing to invoke the action. They consistently include 
+an execution operation (such as run() or execute()). All Command objects
+with the same interface can easily be swapped as needed and this is 
+considered one of the larger benefits of the pattern.
+*/
+</pre></dd>
+<dt>Command Pattern - Demo</dt>
+<dd><pre>
+  /*
+To demonstrate the Command pattern we're going to create a simple car purchasing service.
+*/
+(function(){
+ 
+  var carManager = {
+ 
+    // request information
+    requestInfo: function( model, id ){
+      return "The information for " + model + " with ID " + id + " is foobar";
+    },
+ 
+    // purchase the car
+    buyVehicle: function( model, id ){
+      return "You have successfully purchased Item " + id + ", a " + model;
+    },
+ 
+    // arrange a viewing
+    arrangeViewing: function( model, id ){
+      return "You have successfully booked a viewing of " + model + " ( " + id + " ) ";
+    }
+ 
+  };
+ 
+})();
+</pre></dd>
+<dt>Command Pattern - Demo Description</dt>
+<dd><pre>
+/*
+Taking a look at the above code, it would be trivial to invoke our carManager 
+methods by directly accessing the object. We would all be forgiven for 
+thinking there is nothing wrong with this - technically, it's completely 
+valid JavaScript. There are however scenarios where this may be disadvantageous.
+
+For example, imagine if the core API behind the carManager changed. This would 
+require all objects directly accessing these methods within our application 
+to also be modified. This could be viewed as a layer of coupling which 
+effectively goes against the OOP methodology of loosely coupling objects 
+as much as possible. Instead, we could solve this problem by abstracting 
+the API away further.
+
+Let's now expand on our carManager so that our application of the Command
+pattern results in the following: accept any named methods that can be 
+performed on the carManager object, passing along any data that might be
+used such as the Car model and ID.
+*/
+</pre></dd>
+<dt>Command Pattern - Demo continued</dt>
+<dd><pre>
+  /*
+Here is what we would like to be able to achieve:
+*/
+carManager.execute( "buyVehicle", "Ford Escort", "453543" );
+/*
+ As per this structure we should now add a definition for the carManager.execute 
+ method as follows:
+*/
+carManager.execute = function ( name ) {
+    return carManager[name] && carManager[name].apply( carManager, [].slice.call(arguments, 1) );
+};
+/*
+Our final sample calls would thus look as follows:
+*/
+carManager.execute( "arrangeViewing", "Ferrari", "14523" );
+carManager.execute( "requestInfo", "Ford Mondeo", "54323" );
+carManager.execute( "requestInfo", "Ford Escort", "34232" );
+carManager.execute( "buyVehicle", "Ford Escort", "34232" );
+</pre></dd>
+
+<dt>The Facade Pattern</dt>
+<dd></dd>
+<dt>The Facade Pattern</dt>
+<dd><pre>
+/*
+This pattern provides a convenient higher-level interface to a larger 
+body of code, hiding its true underlying complexity. Think of it as 
+simplifying the API being presented to other developers, something 
+which almost always improves usability.
+
+Facades are a structural pattern which can often be seen in JavaScript 
+libraries like jQuery where, although an implementation may support 
+methods with a wide range of behaviors, only a "facade" or limited 
+abstraction of these methods is presented to the public for use.
+
+This allows us to interact with the Facade directly rather than the 
+subsystem behind the scenes. Whenever we use jQuery's $(el).css() or 
+$(el).animate() methods, we're actually using a Facade - the simpler 
+public interface that avoid us having to manually call the many internal 
+methods in jQuery core required to get some behavior working. This also 
+avoids the need to manually interact with DOM APIs and maintain state variables
+
+The jQuery core methods should be considered intermediate abstractions. 
+The more immediate burden to developers is the DOM API and facades are 
+what make the jQuery library so easy to use.
+
+To build on what we've learned, the Facade pattern both simplifies the 
+interface of a class and it also decouples the class from the code that 
+utilizes it. This gives us the ability to indirectly interact with subsystems 
+in a way that can sometimes be less prone to error than accessing the 
+subsystem directly. A Facade's advantages include ease of use and often 
+a small size-footprint in implementing the pattern.
+
+We're utilizing a Facade to simplify an interface for listening to events 
+cross-browser. We do this by creating a common method that can be used in 
+one's code which does the task of checking for the existence of features 
+so that it can provide a safe and cross-browser compatible solution.
+
+*/
+</pre></dd>
+<dt>Facade - Example</dt>
+<dd><pre>
+var addMyEvent = function( el,ev,fn ){
+ 
+   if( el.addEventListener ){
+            el.addEventListener( ev,fn, false );
+      }else if(el.attachEvent){
+            el.attachEvent( "on" + ev, fn );
+      } else{
+           el["on" + ev] = fn;
+    }
+ 
+};
+/*
+In a similar manner, we're all familiar with jQuery's $(document).ready(..). 
+Internally, this is actually being powered by a method called bindReady(), 
+which is doing this:
+*/
+bindReady: function() {
+    ...
+    if ( document.addEventListener ) {
+      // Use the handy event callback
+      document.addEventListener( "DOMContentLoaded", DOMContentLoaded, false );
+ 
+      // A fallback to window.onload, that will always work
+      window.addEventListener( "load", jQuery.ready, false );
+ 
+    // If IE event model is used
+    } else if ( document.attachEvent ) {
+ 
+      document.attachEvent( "onreadystatechange", DOMContentLoaded );
+ 
+      // A fallback to window.onload, that will always work
+      window.attachEvent( "onload", jQuery.ready );
+	  
+/*
+This is another example of a Facade, where the rest of the world simply 
+uses the limited interface exposed by $(document).ready(..) and the more
+complex implementation powering it is kept hidden from sight.
+*/
+</pre></dd>
+<dt>Facade and Module Pattern</dt>
+<dd><pre>
+/*Facades don't just have to be used on their own, however. They can also 
+be integrated with other patterns such as the Module pattern. As we can 
+see below, our instance of the module patterns contains a number of methods
+which have been privately defined. A Facade is then used to supply a much 
+simpler API to accessing these methods:
+
+Example :
+*/
+var module = (function() {
+ 
+    var _private = {
+        i:5,
+        get : function() {
+            console.log( "current value:" + this.i);
+        },
+        set : function( val ) {
+            this.i = val;
+        },
+        run : function() {
+            console.log( "running" );
+        },
+        jump: function(){
+            console.log( "jumping" );
+        }
+    };
+ 
+    return {
+ 
+        facade : function( args ) {
+            _private.set(args.val);
+            _private.get();
+            if ( args.run ) {
+                _private.run();
+            }
+        }
+    };
+}());
+ 
+ 
+// Outputs: "current value: 10" and "running"
+module.facade( {run: true, val:10} );
+/*
+In this example, calling module.facade() will actually trigger 
+a set of private behavior within the module, but again, the user 
+isn't concerned with this. we've made it much easier for them 
+to consume a feature without needing to worry about 
+implementation-level details.
+*/
+</pre></dd>
+
+<dt>The Factory Pattern </dt>
+<dd></dd>
+<dt>The Factory Pattern</dt>
+<dd><pre>
+/*
+The Factory pattern is another creational pattern concerned with the 
+notion of creating objects. Where it differs from the other patterns 
+in its category is that it doesn't explicitly require us use a constructor. 
+Instead, a Factory can provide a generic interface for creating objects, 
+where we can specify the type of factory object we wish to be created.
+
+Examples of this pattern can be found in UI libraries such as ExtJS where 
+the methods for creating objects or components may be further subclassed.
+
+Example : The following is an example that builds upon our previous snippets 
+using the Constructor pattern logic to define cars. It demonstrates how a 
+Vehicle Factory may be implemented using the Factory pattern:
+*/
+// Types.js - Constructors used behind the scenes
+</pre></dd>
+<dt>Factory Pattern - Example</dt>
+<dd><pre>
+// A constructor for defining new cars
+function Car( options ) {
+ 
+  // some defaults
+  this.doors = options.doors || 4;
+  this.state = options.state || "brand new";
+  this.color = options.color || "silver";
+ 
+}
+ 
+// A constructor for defining new trucks
+function Truck( options){
+ 
+  this.state = options.state || "used";
+  this.wheelSize = options.wheelSize || "large";
+  this.color = options.color || "blue";
+}
+ 
+// FactoryExample.js
+ 
+// Define a skeleton vehicle factory
+function VehicleFactory() {}
+ 
+// Define the prototypes and utilities for this factory
+ 
+// Our default vehicleClass is Car
+VehicleFactory.prototype.vehicleClass = Car;
+ 
+// Our Factory method for creating new Vehicle instances
+VehicleFactory.prototype.createVehicle = function ( options ) {
+ 
+  switch(options.vehicleType){
+    case "car":
+      this.vehicleClass = Car;
+      break;
+    case "truck":
+      this.vehicleClass = Truck;
+      break;
+    //defaults to VehicleFactory.prototype.vehicleClass (Car)
+  }
+ 
+  return new this.vehicleClass( options );
+ 
+};
+ 
+// Create an instance of our factory that makes cars
+var carFactory = new VehicleFactory();
+var car = carFactory.createVehicle( {
+            vehicleType: "car",
+            color: "yellow",
+            doors: 6 } );
+ 
+// Test to confirm our car was created using the vehicleClass/prototype Car
+ 
+// Outputs: true
+console.log( car instanceof Car );
+ 
+// Outputs: Car object of color "yellow", doors: 6 in a "brand new" state
+console.log( car );
+</pre></dd>
+<dt>Factory Pattern - Other approaches</dt>
+<dd><pre>
+/*
+Approach #1: Modify a VehicleFactory instance to use the Truck class
+*/
+var movingTruck = carFactory.createVehicle( {
+                      vehicleType: "truck",
+                      state: "like new",
+                      color: "red",
+                      wheelSize: "small" } );
+ 
+// Test to confirm our truck was created with the vehicleClass/prototype Truck
+ 
+// Outputs: true
+console.log( movingTruck instanceof Truck );
+ 
+// Outputs: Truck object of color "red", a "like new" state
+// and a "small" wheelSize
+console.log( movingTruck );
+/*
+Approach #2: Subclass VehicleFactory to create a factory class that builds Trucks
+*/
+function TruckFactory () {}
+TruckFactory.prototype = new VehicleFactory();
+TruckFactory.prototype.vehicleClass = Truck;
+ 
+var truckFactory = new TruckFactory();
+var myBigTruck = truckFactory.createVehicle( {
+                    state: "omg..so bad.",
+                    color: "pink",
+                    wheelSize: "so big" } );
+ 
+// Confirms that myBigTruck was created with the prototype Truck
+// Outputs: true
+console.log( myBigTruck instanceof Truck );
+ 
+// Outputs: Truck object with the color "pink", wheelSize "so big"
+// and state "omg. so bad"
+console.log( myBigTruck );
+</pre></dd>
+<dt>When To Use The Factory Pattern</dt>
+<dd><pre>
+/*
+The Factory pattern can be especially useful when applied to the following situations:
+
+#When our object or component setup involves a high level of complexity.
+#When we need to easily generate different instances of objects depending 
+on the environment we are in.
+#When we're working with many small objects or components that share the 
+same properties.
+#When composing objects with instances of other objects that need only 
+satisfy an API contract (aka, duck typing) to work. This is useful for decoupling.
+*/
+</pre></dd>
+<dt>When Not To Use The Factory Pattern</dt>
+<dd><pre>
+/*
+When applied to the wrong type of problem, this pattern can introduce 
+an unnecessarily great deal of complexity to an application. 
+Unless providing an interface for object creation is a design goal 
+for the library or framework we are writing, I would suggest sticking 
+to explicit constructors to avoid the unnecessary overhead.
+
+Due to the fact that the process of object creation is effectively 
+abstracted behind an interface, this can also introduce problems 
+with unit testing depending on just how complex this process might be.
+*/
+</pre></dd>
+<dt>Abstract Factories</dt>
+<dd></dd>
+<dt>Abstract Factories</dt>
+<dd><pre>
+/*
+
+It is also useful to be aware of the Abstract Factory pattern, which 
+aims to encapsulate a group of individual factories with a common goal. 
+It separates the details of implementation of a set of objects from their 
+general usage.
+
+An Abstract Factory should be used where a system must be independent 
+from the way the objects it creates are generated or it needs to work 
+with multiple types of objects.
+*/
+</pre></dd>
+<dt>Abstract Factory - Example</dt>
+<dd><pre>
+/*
+Example :An example which is both simple and easier to understand is 
+a vehicle factory, which defines ways to get or register vehicles types. 
+The abstract factory can be named abstractVehicleFactory. The Abstract 
+factory will allow the definition of types of vehicle like "car" or 
+"truck" and concrete factories will implement only classes that fulfill 
+the vehicle contract (e.g Vehicle.prototype.drive and Vehicle.prototype.breakDown).
+*/
+var abstractVehicleFactory = (function () {
+ 
+  // Storage for our vehicle types
+  var types = {};
+ 
+  return {
+      getVehicle: function ( type, customizations ) {
+          var Vehicle = types[type];
+ 
+          return (Vehicle ? new Vehicle(customizations) : null);
+      },
+ 
+      registerVehicle: function ( type, Vehicle ) {
+          var proto = Vehicle.prototype;
+ 
+          // only register classes that fulfill the vehicle contract
+          if ( proto.drive && proto.breakDown ) {
+              types[type] = Vehicle;
+          }
+ 
+          return abstractVehicleFactory;
+      }
+  };
+})();
+ 
+ 
+// Usage:
+ 
+abstractVehicleFactory.registerVehicle( "car", Car );
+abstractVehicleFactory.registerVehicle( "truck", Truck );
+ 
+// Instantiate a new car based on the abstract vehicle type
+var car = abstractVehicleFactory.getVehicle( "car" , {
+            color: "lime green",
+            state: "like new" } );
+ 
+// Instantiate a new truck in a similar manner
+var truck = abstractVehicleFactory.getVehicle( "truck" , {
+            wheelSize: "medium",
+            color: "neon yellow" } );
+</pre></dd>
+
+<dt>The Mixin Pattern</dt>
+<dd></dd>
+<dt>The Mixin Pattern</dt>
+<dd><pre>
+/*
+In traditional programming languages such as C++ and Lisp, Mixins 
+are classes which offer functionality that can be easily inherited 
+by a sub-class or group of sub-classes for the purpose of function re-use.
+
+Sub-classing :
+
+Sub-classing is a term that refers to inheriting properties for a new 
+object from a base or superclass object.
+*/
+</pre></dd>
+<dt>Mixin Pattern - Example</dt>
+<dd><pre>
+/*Example : In order to demonstrate sub-classing, we first need a base 
+object that can have new instances of itself created. let's model 
+this around the concept of a person. 
+*/
+var Person =  function( firstName , lastName ){
+ 
+  this.firstName = firstName;
+  this.lastName =  lastName;
+  this.gender = "male";
+ 
+};
+/*
+Next, we'll want to specify a new class (object) that's a subclass 
+of the existing Person object. Let us imagine we want to add distinct 
+properties to distinguish a Person from a Superhero whilst inheriting 
+the properties of the Person "superclass". As superheroes share many 
+common traits with normal people (e.g. name, gender), this should 
+hopefully illustrate how sub-classing works adequately.
+*/
+// a new instance of Person can then easily be created as follows:
+var clark = new Person( "Clark" , "Kent" );
+ 
+// Define a subclass constructor for for "Superhero":
+var Superhero = function( firstName, lastName , powers ){
+ 
+    // Invoke the superclass constructor on the new object
+    // then use .call() to invoke the constructor as a method of
+    // the object to be initialized.
+ 
+    Person.call( this, firstName, lastName );
+ 
+    // Finally, store their powers, a new array of traits not found in a normal "Person"
+    this.powers = powers;
+};
+ 
+SuperHero.prototype = Object.create( Person.prototype );
+var superman = new Superhero( "Clark" ,"Kent" , ["flight","heat-vision"] );
+console.log( superman );
+ 
+// Outputs Person attributes as well as powers
+/*
+The Superhero constructor creates an object which descends from Person. 
+Objects of this type have attributes of the objects that are above it 
+in the chain and if we had set default values in the Person object, 
+Superhero is capable of overriding any inherited values with values 
+specific to it's object.
+*/
+</pre></dd>
+<dt>Mixins in Detail</dt>
+<dd><pre>
+/*
+In JavaScript, we can look at inheriting from Mixins as a means of collecting 
+functionality through extension. Each new object we define has a prototype from 
+which it can inherit further properties. Prototypes can inherit from other object 
+prototypes but, even more importantly, can define properties for any number of 
+object instances. We can leverage this fact to promote function re-use.
+
+Mixins allow objects to borrow (or inherit) functionality from them with a minimal 
+amount of complexity. As the pattern works well with JavaScripts object prototypes, 
+it gives us a fairly flexible way to share functionality from not just one Mixin,
+but effectively many through multiple inheritance.
+
+Example : They can be viewed as objects with attributes and methods that can 
+be easily shared across a number of other object prototypes. Imagine that we 
+define a Mixin containing utility functions in a standard object literal as follows:
+*/
+</pre></dd>
+<dt>Mixins - Example</dt>
+<dd><pre>
+var myMixins = {
+ 
+  moveUp: function(){
+    console.log( "move up" );
+  },
+ 
+  moveDown: function(){
+    console.log( "move down" );
+  },
+ 
+  stop: function(){
+    console.log( "stop! in the name of love!" );
+  }
+ 
+};
+/*
+We can then easily extend the prototype of existing constructor functions to 
+include this behavior using a helper such as the Underscore.js _.extend() method:
+*/
+// A skeleton carAnimator constructor
+function CarAnimator(){
+  this.moveLeft = function(){
+    console.log( "move left" );
+  };
+}
+ 
+// A skeleton personAnimator constructor
+function PersonAnimator(){
+  this.moveRandomly = function(){ /*..*/ };
+}
+ 
+// Extend both constructors with our Mixin
+_.extend( CarAnimator.prototype, myMixins );
+_.extend( PersonAnimator.prototype, myMixins );
+ 
+// Create a new instance of carAnimator
+var myAnimator = new CarAnimator();
+myAnimator.moveLeft();
+myAnimator.moveDown();
+myAnimator.stop();
+ 
+// Outputs:
+// move left
+// move down
+// stop! in the name of love!
+/*
+As we can see, this allows us to easily "mix" in common behaviour 
+into object constructors fairly trivially.
+
+Now we have two constructors: a Car and a Mixin. What we're going 
+to do is augment (another way of saying extend) the Car so that it 
+can inherit specific methods defined in the Mixin, namely driveForward() 
+and driveBackward(). This time we won't be using Underscore.js.
+
+Example : example will demonstrate how to augment a constructor to 
+include functionality without the need to duplicate this process for 
+every constructor function we may have.
+*/
+// Define a simple Car constructor
+var Car = function ( settings ) {
+ 
+    this.model = settings.model || "no model provided";
+    this.color = settings.color || "no colour provided";
+ 
+};
+ 
+// Mixin
+var Mixin = function () {};
+ 
+Mixin.prototype = {
+ 
+    driveForward: function () {
+        console.log( "drive forward" );
+    },
+ 
+    driveBackward: function () {
+        console.log( "drive backward" );
+    },
+ 
+    driveSideways: function () {
+        console.log( "drive sideways" );
+    }
+ 
+};
+ 
+ 
+// Extend an existing object with a method from another
+function augment( receivingClass, givingClass ) {
+ 
+    // only provide certain methods
+    if ( arguments[2] ) {
+        for ( var i = 2, len = arguments.length; i < len; i++ ) {
+            receivingClass.prototype[arguments[i]] = givingClass.prototype[arguments[i]];
+        }
+    }
+    // provide all methods
+    else {
+        for ( var methodName in givingClass.prototype ) {
+ 
+            // check to make sure the receiving class doesn't
+            // have a method of the same name as the one currently
+            // being processed
+            if ( !Object.hasOwnProperty.call(receivingClass.prototype, methodName) ) {
+                receivingClass.prototype[methodName] = givingClass.prototype[methodName];
+            }
+ 
+            // Alternatively (check prototype chain as well):
+            // if ( !receivingClass.prototype[methodName] ) {
+            //  receivingClass.prototype[methodName] = givingClass.prototype[methodName];
+            // }
+        }
+    }
+}
+ 
+ 
+// Augment the Car constructor to include "driveForward" and "driveBackward"
+augment( Car, Mixin, "driveForward", "driveBackward" );
+ 
+// Create a new Car
+var myCar = new Car({
+    model: "Ford Escort",
+    color: "blue"
+});
+ 
+// Test to make sure we now have access to the methods
+myCar.driveForward();
+myCar.driveBackward();
+ 
+// Outputs:
+// drive forward
+// drive backward
+ 
+// We can also augment Car to include all functions from our mixin
+// by not explicitly listing a selection of them
+augment( Car, Mixin );
+ 
+var mySportsCar = new Car({
+    model: "Porsche",
+    color: "red"
+});
+ 
+mySportsCar.driveSideways();
+ 
+// Outputs:
+// drive sideways
+</pre></dd>
+<dt>Advantages & Disadvantages</dt>
+<dd><pre>
+/*
+Mixins assist in decreasing functional repetition and increasing 
+function re-use in a system. Where an application is likely to require
+shared behaviour across object instances, we can easily avoid any 
+duplication by maintaining this shared functionality in a Mixin and 
+thus focusing on implementing only the functionality in our system 
+which is truly distinct.
+
+That said, the downsides to Mixins are a little more debatable. 
+Some developers feel that injecting functionality into an object 
+prototype is a bad idea as it leads to both prototype pollution 
+and a level of uncertainly regarding the origin of our functions. 
+In large systems this may well be the case.
+*/
+</pre></dd>
+</dl>
+
+
+</body></html>
