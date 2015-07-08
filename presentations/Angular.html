@@ -1,0 +1,258 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>AngularJS</title>
+<link rel="stylesheet" href="./resources/training.css">
+<link rel="stylesheet" href="./resources/recipes.css">
+<script src="./resources/jquery.js"></script>
+<script src="./resources/jquery.chili.js"></script>
+<script src="./resources/recipes.js"></script>
+<script src="./resources/training.js"></script>
+</head>
+<body>
+<h3 class="">AngularJS</h3>
+<div id="area">
+<pre id="pre" class="javascript" style="height: 500px; display: block;"></pre>
+<form id="form">
+<div class="buttons" style="display: block;">
+<input type="submit" value="Run" class="run" id="run" style="display: none;">
+<input type="button" id="prev" value="<< Prev" style="visibility: visible;">
+<input type="button" id="next" value="Next >>" style="visibility: visible;">
+</div>
+<div id="container">
+	<textarea id="code" wrap="off" style="height: 500px; display: none;margin-top:25px;"></textarea>
+	<ol id="results"></ol>
+	<p id="cite" style="display: block;">Double-click the code to edit the tutorial and try your own code.</p>
+</div>
+</form>
+</div>
+<dl style="display: none;">
+<dt>AngularJS - Overview</dt>
+<dd></dd>
+<dt>Declarative style added to HTML</dt>
+<dd><pre>
+Adds a construct for the browser - directives
+Primarily designed for CRUD operations => Forms and form validations. 
+Not applicable for apps containing plenty of granular elements as part of the DOM which implies performance overhead as well as intensive and tricky DOM manipulation.
+Attaching new behaviour to DOM elements
+Grouping of HTML into reusable components
+Client side templating framework
+AngularJS provides live bindings => two way binding
+</pre></dd>
+<dt>When to use</dt>
+<dd><pre>
+1. Decouple DOM manipulation from app logic => Improves testability of the code
+2. Testing difficulty is improved by the way the code is structure
+3. Decouple client side of an app from server side => dev progress independently
+4. Framework guides the entire journey of building an app => from designing the UI through writing the business logic, to testing
+</pre></dd>
+<dt>What problems it solves</dt>
+<dd><pre>
+1. Registering callbacks - Not needed
+2. Manipulating HTML DOM - Not needed
+3. Code to Marshalling data to and from the UI - Only the code describing the overall flow of the application is required
+4. No need to write lots of code to initialize the code
+</pre></dd>
+<dt>Flow</dt>
+<dd><pre>
+HTML Template ---(AngularJS compiler)---DOM (this is called the View)
+
+HTML Template contains 
+	-> new markup as "directives" => this manipulates the DOM. Possible to create user defined directives to manipulate DOM. Directives are the only place where DOM can be manipulated
+
+	-> new markup as "expressions"
+		 => javascript-like code snippet 
+		 => contains variables within angular defined scope. 
+		 => read and write variables. values in variables within a scope is model
+
+	-> new markup as "filter"
+		=> formats result of an expression to display to user
+</pre></dd>
+<dt>AngularJS Controllers</dt>
+<dd><pre>
+-> Controller constructor => Exposes variables and functionality to expressions and directives
+-> Controller instance is attached to an element. It is available to that element and all its children.
+-> Binding happens with variables and methods exposed by controller
+</pre></dd>
+<dt>AngularJS Services</dt>
+<dd><pre>
+-> View independent business logic separated from contoller and placed in services so that they can be reused and accessed from other parts of application
+-> Also for loose coupling
+</pre></dd>
+<dt>Dependency Injection</dt>
+<dd><pre>
+-> Everything within Angular (directives, filters, controllers, services, ...) created and wired using DI
+-> DI container is called Injector
+-> Modules holds a registry of all components to resolve dependencies
+-> Starts with the module defined in ng-app and then the other modules this depends on
+-> In the example, invoice2 => finance2
+</pre></dd>
+<dt>Angular Module</dt>
+<dd><pre>
+-> First parameter is a module name followed by aray of dependent modules
+-> Parameters are passed first in the array followed by constructor function taking same number of parameters.  Params are passed in the same order to the constructor function
+</pre></dd>
+<dt>One way data binding</dt>
+<dd><pre>
+-> Model and template components bound to view once
+-> Changes to either model or view not automatically reflected in the view
+-> Write code to sync view with model and model with view
+</pre></dd>
+<dt>Two way data binding</dt>
+<dd><pre>
+-> Template when compiled creates the view 
+-> Any changes to view instantly reflected in model
+-> Any changes in the model are propogated to the view
+-> Model is the single source of truth for the application state
+-> View is just an instant projection of model
+-> So controller is completely separated from view
+-> Controller can be tested in isolation without the view and related DOM/browser dependency
+</pre></dd>
+<dt>Controllers</dt>
+<dd><pre>
+-> It is a javascript constructor function that is used to augment the angular scope (root scope)
+-> Constructor is invoked when ng-controller directive refers to the controler
+-> A new child scope is injectable to the controller's constructor function as $scope
+</pre></dd>
+<dt>When to use controllers</dt>
+<dd><pre>
+-> Set up initial state of $scope
+-> Add behaviour to $scope
+</pre></dd>
+<dt>When not to use controllers</dt>
+<dd><pre>
+-> Presentation logic or DOM manipulation (use data binding and directives)
+-> Format input (use angular form controls)
+-> Filter output (use angular filters)
+-> Share code and/or state across controllers (use angular services)
+-> Manage life cycle of other components (use dependency injection)
+</pre></dd>
+<dt>Things to remember</dt>
+<dd><pre>
+-> ng-controller directive creates a scope for the template
+-> Scope is managed by controller instance
+-> Controller constructor is hidden for direct access
+-> Assigning a property to $scope creates or updates the model
+-> Controller methods and properties are available in the template for the element where ng-controller is specified as well as for its children
+</pre></dd>
+<dt>Scope inheritance</dt>
+<dd><pre>
+-> ng-controller creates a new child scope
+-> Nested controllers give raise to hierarchy of scopes that inherit from each other
+-> $scope at each hierarchy level will have access to $scope defined higher up the hierarchy
+</pre></dd>
+<dt>HTML Compiler</dt>
+<dd><pre>
+-> Allows one to attach behavior to any HTML element or attribute
+-> Even create new HTML eleements or attributes with custom behavior
+-> The behavior extensions are called directives
+-> Happens in browser and not server side
+</pre></dd>
+<dt>Need for directives</dt>
+<dd><pre>
+-> HTML as a declarative language very difficult to program
+</pre></dd>
+<dt>Compilation phases</dt>
+<dd><pre>
+-> Compile: Travers the DOM, collect all directives, generate linking function
+-> Link: Combine directives with scope, reflect changes in the scope model in the view and produce live view
+-> Compilation produces stable DOM with element instance bound to a model item instance without changing. Code gets hold of elements and register event handlers
+</pre></dd>
+<dt>Compilation of Directives</dt>
+<dd><pre>
+-> Browser travers DOM and matches directives
+		=> Single element can match multiple directives
+		=> DOM element has list of directives
+-> After all directives of DOM element is gathered, compiler sorts by their priority
+-> Each directive's compile functions are executed
+		=> compile function may change the DOM
+		=> compile function returns a link function
+		=> link function from each directive combined to form a "combined" link function
+		=> combined link function invokes each directive's link function
+-> Compiler links template with scope by invoking combined linking function
+		=> Registering listeners on the elements and setting up $watch with the scope as each directive is configured
+-> Result is live View
+</pre></dd>
+<dt>How $compile works</dt>
+<dd><pre>
+var $compile = ...; // injected into your code
+var scope = ...;
+var parent = ...; // DOM element where the compiled template can be appended
+
+var html = '<div ng-bind="exp"></div>';
+
+// Step 1: parse HTML into DOM element
+var template = angular.element(html);
+
+// Step 2: compile the template
+var linkFn = $compile(template);
+
+// Step 3: link the compiled template with the scope.
+var element = linkFn(scope);
+
+// Step 4: Append to DOM (optional)
+parent.appendChild(element);
+</pre></dd>
+<dt>Custom Directives</dt>
+<dd><pre>
+-> Markers on a DOM element - attribute, element-name, comment or CSS class
+-> Directs Angular HTML compiler ($compile) to attach a specified behavior to the DOM element or transform the DOM element and its children
+</pre></dd>
+<dt>Normalization of directive names</dt>
+<dd><pre>
+-> Strip x- and data- from the front of the element/attributes
+-> Convert the :, -, or _-delimited name to camelCase
+-> Prefer ng-* over other options
+</pre></dd>
+<dt>Directive types</dt>
+<dd><pre>
+-> Element names, attributes, class names, comments
+-> Prefer element names and attributes over class names and comments
+-> Use ng-repeat-start and ng-repeat-end over comment directives
+</pre></dd>
+<dt>Custom directives</dt>
+<dd><pre>
+	1. Invoke module.directive with the normalized name and factory function
+	2. Factory function returns object with various obtions for directives behavior
+	3. Factory function is invoked only once when the compiler matches the directive for the first time
+	4. Prefer using definition object over function
+	5. Prefix with some letters so that it doesn't conflict in future
+</pre></dd>
+<dt>Options</dt>
+<dd><pre>
+	=> Use template
+	=> Use template-url to load html fragment from html file
+	=> Can't access scope
+</pre></dd>
+<dt>Restrict Options</dt>
+<dd><pre>
+	=> 'A' matches attribute
+	=> 'E' matches element
+	=> 'C' matches class names
+	=> Restrictions can be combined
+	=> restrict: 'E'
+
+	.directive('myCustomer', function() {
+  return {
+    restrict: 'E',
+    templateUrl: 'my-customer.html'
+  };
+}
+</pre></dd>
+<dt>attribute vs element directive</dt>
+<dd><pre>
+	=> Use element when creating component in control of the template
+	=> Use attribute to decorate existing element with new functionality
+</pre></dd>
+<dt>Options</dt>
+<dd><pre>
+</pre></dd>
+<dt>Options</dt>
+<dd><pre>
+</pre></dd>
+<dt>Options</dt>
+<dd><pre>
+</pre></dd>
+<dt>Options</dt>
+<dd><pre>
+</pre></dd>
+</dl>
+</body></html>
