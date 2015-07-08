@@ -1,0 +1,38 @@
+http://pastebin.com/Z2EN7WtL
+<html>
+<head>
+</head>
+<body>
+    <div id="1">One
+    </div>
+    <div id="2">Two
+    </div>
+    <div id="3">Three
+    </div>
+    <div id="4">Four
+    </div>
+    <div id="5">Five
+    </div>
+    <div id="6">Six
+    </div>
+    <div id="7">Seven
+    </div>
+    <div id="8">Eight
+    </div>
+</body>
+<script>
+    var cache = {}
+    function getDivContents(divId) {
+        if (cache[divId]) {
+            console.log("From cache" + cache[divId].innerHTML);
+        } else {
+            cache[divId] = document.getElementById(divId);
+            console.log("From scan" + cache[divId].innerHTML);
+        }
+    }
+    getDivContents("1");
+    getDivContents("1");
+    getDivContents("1");
+    getDivContents("1");
+</script>
+</html>

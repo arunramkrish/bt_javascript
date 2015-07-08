@@ -1,0 +1,38 @@
+http://pastebin.com/x6sGbsBa
+<html>
+<head>
+</head>
+<body>
+    <div id="mapOutput">
+    </div>
+    <div id="reduceOutput">
+    </div>
+</body>
+<script>
+    var interval = 100;
+    for (var i=0;i<5;i++) {
+        (function (i) {
+        setTimeout(function() {
+            console.log(i + "from interrupt");
+        }, interval);
+    })(i);
+    }
+
+    var map = function(number) {
+        return number * number;
+    };
+    var reduce = function(array) {
+        var sum = 0;
+        for (var i=0;i<array.length;i++) {
+            sum = sum + array[i];
+        }
+        return sum;
+    }
+    
+    var input = [3,5,6,9,8,10];
+    
+    function mapReduce(input, m, r) {
+    }
+    
+</script>
+</html>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+.failure{
+color:red; 
+}
+.paragraph {
+font-size:25px;
+}
+</style>
+</head>
+<body>
+
+<h1>What Can JavaScript Do?</h1>
+
+<p id="demo" class="paragraph">JavaScript can change the style of an HTML element.</p>
+
+<script>
+function myFunction() {
+    var x = document.getElementById("demo");
+   x.className = x.className + " failure";
+
+}
+</script>
+
+<button type="button" onclick="myFunction()">Click Me!</button>
+
+</body>
+</html> 

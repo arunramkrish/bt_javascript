@@ -1,0 +1,41 @@
+<html>
+<head>
+</head>
+<body>
+</body>
+<script>
+var obj = {
+	a: "A",
+	met : function() {
+		console.log("behaviour");
+	}
+}
+
+var b = Object.create(obj);
+var c = new Object();
+
+function MyClass(n) {
+	this.a = n;
+}
+
+var d = new MyClass("d");
+d.newMethod = function() {
+	console.log("in newMethod" + this.a);
+}
+var e = Object.create(d);
+d.newMethod();
+
+e.a = "e"
+e.newMethod();
+
+MyClass.prototype.met = function() {
+	console.log("new function met" + this.a);
+};
+d.met();
+e.met();
+
+var f = new MyClass("f");
+f.newMethod();
+
+</script>
+</html>
