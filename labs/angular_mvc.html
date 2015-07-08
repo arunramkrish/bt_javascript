@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Angular Demo</title>
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.1/angular.min.js"></script>
+</head>
+<body >
+<div ng-app="angularDemo" ng-controller="DemoController as demo">
+  <b>Transaction:</b>
+  <div>
+    Txn Id: <input type="text" ng-model="demo.txnId" required >
+  </div>
+  <div>
+    Amount: <input type="number" ng-model="demo.amount" required >
+  </div>
+  <div>
+    Date: <input type="text" ng-model="demo.txnDate" required >
+  </div>
+  <button class="btn" ng-click="demo.submitTxn()">Submit</button>
+  
+  <p ng-repeat="t in demo.txns">
+      {{t.txnId}} {{t.amount | currency:c}} {{t.txnDate}}
+  </p>
+  </div>
+</div>
+</body>
+<script type="text/javascript">
+angular.module('angularDemo', ['txnServiceModule'])
+.controller('DemoController', ['txnService', function(txnSvc) {
+  this.txnId = "";
+  this.amount = 0;
+  this.txnDate = "";
+  this.txns = new Array();
+  
+  this.submitTxn = function () {
+    var newTxn = {txnId: this.txnId, amount : this.amount, txnDate : this.txnDate};
+    txnSvc.addTxn(newTxn);
+    this.txns.push(newTxn);
+  };
+}]);
+</script>
+<script type="text/javascript">
+angular.module('txnServiceModule', [])
+.factory('txnService', function() {
+  var txns = new Array();
+  
+  var submitTxn = function (txn) {
+    txns.push(txn);
+  };
+
+  return {
+    addTxn: submitTxn
+  };
+});
+</script>
+</html>
