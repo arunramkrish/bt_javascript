@@ -1,0 +1,35 @@
+<html>
+<head>
+	<title>Custom Datagrid</title>
+	<link rel="stylesheet" type="text/css" href="datagrid.css"/>
+</head>
+<body onload="loadGrid();">
+<div id="datagridHolder">
+</div>
+</body>
+<script src="datagrid.js"></script>
+<script>
+function DataGridModel(columns, rows) {
+	this.columns = columns;
+	this.rows = rows;
+	this.getColumns = function() {
+		return this.columns;
+	};
+	this.getRows = function() {
+		return this.rows;
+	};
+}
+	function loadGrid() {
+		var employees = [{id:1, name:'Arun', address:'Bangalore'},
+		{id:2, name:'Arun', address:'Chennai'},
+		{id:3, name:'Arun', address:'Mumbai'},
+		{id:4, name:'Arun', address:'Delhi'},
+		{id:5, name:'Arun', address:'Calcutta'}];
+		var colsToDisplay = ['id', 'name', 'address'];
+		
+		var model = new DataGridModel(colsToDisplay, employees);
+		var listener = DataGridListener();
+		window.datagrid = new DataGrid("datagridHolder", model, listener);
+	}
+</script>
+</html>

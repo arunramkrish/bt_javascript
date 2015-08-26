@@ -1,0 +1,66 @@
+<html>
+<head>
+</head>
+<body>
+<h1>Users</h1>
+<div id="users">
+</div>
+<h1>Employees</h1>
+<div id="employees">
+</div>
+</body>
+<script>
+function User(id) {
+	this.id = id;
+}
+function idCompare(user1, user2) {
+	return user1.id - user2.id;
+}
+function nameCompare(user1, user2) {
+	return user1.name - user2.name;
+}
+
+User.prototype.compare = idCompare;
+User.prototype.toString = function() {
+	return this.id;
+}
+
+function Employee(id, name) {
+	User.call(this, id);
+	this.name = name;
+}
+Employee.prototype = Object.create(User.prototype, {
+	toString : {
+	value:function() {
+		var baseStr = User.prototype.toString.call(this);
+		return baseStr + this.name;
+	}
+	}
+});
+var users = new Array();
+users.push(new User(2));
+users.push(new User(1));
+users.push(new User(5));
+users.push(new User(4));
+
+var sortedUsers = users.sort(idCompare);
+var htmlFragment = "";
+for ( var i=0;i< sortedUsers.length;i++) {
+	htmlFragment += "<span>" + sortedUsers[i].toString() + "</span>";
+}
+document.getElementById("users").innerHTML = htmlFragment;
+
+var employees = new Array();
+employees.push(new Employee(2, "Arun"));
+employees.push(new Employee(1, "Ram"));
+employees.push(new Employee(5, "Krish"));
+employees.push(new Employee(4, "Moorthy"));
+
+var sortedEmployees = employees.sort(idCompare);
+var empFragment = "";
+for ( var i=0;i< sortedEmployees.length;i++) {
+	empFragment += "<span>" + sortedEmployees[i].toString() + "</span>";
+}
+document.getElementById("employees").innerHTML = empFragment;
+</script>
+</html>

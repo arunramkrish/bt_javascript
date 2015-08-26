@@ -1,0 +1,22 @@
+.dg-table {
+    border-width: thin;
+    border-style: solid;
+    background-color: lightgray;
+}
+.dg-header-row {
+	background-color: gray;
+	font-weight: bold;
+	color: white;
+}
+.dg-header-cell {
+	border-style: solid;
+    border-width: thin;
+    padding: 3px;
+}
+.dg-row {
+}
+.dg-cell {
+	border-style: solid;
+    border-width: thin;
+    padding: 3px;
+}

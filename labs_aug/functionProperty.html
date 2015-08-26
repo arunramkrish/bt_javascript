@@ -1,0 +1,33 @@
+<html>
+<head>
+</head>
+<body>
+<pre>
+</pre>
+<pre>
+</pre>
+<pre>
+</pre>
+<pre>
+</pre>
+</body>
+<script>
+function getElements( name ) {
+  var results;
+  if ( getElements.cache[name] ) {
+    results = getElements.cache[name];
+  } else {
+    results = document.getElementsByTagName(name);
+    getElements.cache[name] = results;
+  }
+
+  return results;
+}
+getElements.cache = {};
+var obj = new getElements();
+console.log (obj.cache);
+
+console.log( "Elements found: " + getElements("pre").length );
+console.log( "Cache found: " + getElements.cache.pre.length );
+</script>
+</html>

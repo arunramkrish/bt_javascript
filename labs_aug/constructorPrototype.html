@@ -1,0 +1,36 @@
+<html>
+<head>
+</head>
+<body>
+<pre>
+</pre>
+<pre>
+</pre>
+<pre>
+</pre>
+<pre>
+</pre>
+</body>
+<script>
+function Graph() {
+  this.vertices = [];
+  this.edges = [];
+  this.removeVertex = function(v){
+    this.vertices.pop(v);
+  }
+}
+
+
+var g = new Graph();
+Graph.prototype = {
+  addVertex: function(v){
+    this.vertices.push(v);
+  }
+};
+
+var h = new Graph();
+// g is an object with own properties 'vertices' and 'edges'.
+// g.[[Prototype]] is the value of Graph.prototype when new Graph() is executed.
+console.log(g);
+</script>
+</html>

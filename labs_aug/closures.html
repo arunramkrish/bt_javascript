@@ -1,0 +1,37 @@
+<html>
+<head>
+</head>
+<body>
+</body><script>
+function Ninja(){ 
+  var slices = 0;  //test by changing this with this.slices 
+  
+  this.getSlices = function(){ 
+    return slices; 
+  }; 
+  this.slice = function(){ 
+    slices++; 
+  }; 
+} 
+
+function Ninja2(){ 
+  var slices = 0;  //test by changing this with this.slices 
+  
+  this.getSlices = function(){ 
+    return slices; 
+  }; 
+  this.slice = function(){ 
+    slices++; 
+  }; 
+} 
+ 
+var ninja = new Ninja(); 
+ninja.slice(); 
+console.log( ninja.getSlices());
+
+var ninja2 = new Ninja2(); 
+ninja2.slice(); 
+console.log( ninja2.getSlices());
+
+</script>
+</html>

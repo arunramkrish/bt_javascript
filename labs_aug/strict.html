@@ -1,0 +1,31 @@
+<html>
+<head>
+</head>
+<body>
+<h1>Users</h1>
+<div id="users">
+</div>
+<h1>Employees</h1>
+<div id="employees">
+</div>
+</body>
+<script>
+//"use strict";
+var emp = {};
+var id = 0;
+Object.defineProperty(emp, 'id', {
+	get : function() { console.log("inside getter"); return id; },
+	set : function(newId) { console.log("inside setter");  id = newId;},
+	configurable : true
+});
+console.log(emp.id);
+emp.id = 10;
+console.log(emp.id);
+try {
+	delete emp.id;
+	console.log("after deleting" + emp.id);
+}catch(e) {
+	console.log(e);
+}
+</script>
+</html>

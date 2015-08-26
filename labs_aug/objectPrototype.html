@@ -1,0 +1,22 @@
+<html>
+<head>
+<script>
+	Object.prototype.toString = function() {
+		return "it is my tostring";
+	};
+	var a = {
+		name: "A"
+	};
+	var b = {
+		xyz : "B"
+	};
+	var d = new Object();
+	d.name = "my name";
+	console.log(a.toString());
+	console.log(b.toString());
+	console.log(d.name);
+</script>
+</head>
+<body>
+</body>
+</html>

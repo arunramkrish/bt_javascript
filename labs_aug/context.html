@@ -1,0 +1,15 @@
+<html>
+<head>
+<script>
+	var A = function() {
+		console.log(this);
+	};
+	var a = new A();
+	A();
+	A.call(a);
+	
+</script>
+</head>
+<body>
+</body>
+</html>
