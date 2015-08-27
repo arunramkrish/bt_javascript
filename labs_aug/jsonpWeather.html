@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>img{ height: 100px; float: left; }</style>
+  <script src="http://code.jquery.com/jquery-latest.js"></script>
+</head>
+<body>
+  <div id="images">
+  </div>
+<script>
+$.getJSON("http://api.openweathermap.org/data/2.5/weather?lat=12.942063700000002&lon=77.6944728",
+  function(data) {
+    document.getElementById("images").innerHTML = JSON.stringify(data);
+  });</script>
+
+</body>
+</html>
