@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>AJAX Tree Control</title>
+<script type="text/javascript" src="scripts/ajaxtree.js"></script>
+<link rel="stylesheet" href="styles/ajaxtree.css" />
+</head>
+<body>
+	<h1>AJAX Tree</h1>
+	<form id="nodeForm" action="#"
+		onsubmit="submitNode(this); return false;">
+		<div>
+			<span class="label">Node Name</span> <span class="label"><input
+				type="text" id="name"></input></span> <br /> <span class="label">Content</span>
+			<span class="label"><input type="text" id="content"></input></span> <br />
+			<span class="label">Parent</span> <span class="label"><input
+				type="text" id="parent"></input></span> <br /> <span class="label"><input
+				type="submit" value="Submit"></input></span> <span class="label"><input
+				type="button" onclick="clearForm();" value="Cancel"></input></span>
+		</div>
+	</form>
+	<div id="tree-grid-div">
+		<table id="tree-grid">
+			<thead>
+				<tr>
+					<td>Node Name</td>
+					<td>Content</td>
+					<td>Parent</td>
+				</tr>
+			</thead>
+		</table>
+	</div>
+</body>
+</html>
