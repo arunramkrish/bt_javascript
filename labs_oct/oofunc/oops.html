@@ -1,0 +1,36 @@
+<html>
+<head>
+</head>
+<body>
+<script>
+function Shape() {
+  this.x = 0;
+  this.y = 0;
+  this.move = function(a,b) {
+	this.x += a;
+	this.y += b;
+  };
+  this.toString = function() {
+	return this.x + "," + this.y;
+};
+}
+Shape.prototype.toString = function() {
+	return "(" + this.x + "," + this.y + ")";
+};
+Shape();
+var s = new Shape();
+var p = new Shape();
+//var p = Object.create(Shape.prototype);
+//p.prototype.constructor = Shape;
+
+console.log("type of" + typeof s);
+console.log("instance of " + (s instanceof Shape));
+console.log("constructor " + typeof (s.constructor));
+
+console.log(s.x);
+console.log(s.toString());
+console.log(p.toString());
+
+</script>
+</body>
+</html>

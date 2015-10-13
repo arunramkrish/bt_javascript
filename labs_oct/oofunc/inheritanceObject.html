@@ -1,0 +1,28 @@
+<html>
+<head>
+</head>
+<body>
+Inheritance in Javascript through Prototype chain
+<script>
+var o = {
+  a: 2,
+  m: function(b){
+    return this.a + 1;
+  }
+};
+
+console.log(o.m()); // 3
+// When calling o.m in this case, 'this' refers to o
+
+var p = Object.create(o);
+// p is an object that inherits from o
+
+p.a = 12; // creates an own property 'a' on p
+console.log(p.m()); // 13
+console.log(p.__proto__.a);
+
+// when p.m is called, 'this' refers to p.
+// So when p inherits the function m of o, 
+// 'this.a' means p.a, the own property 'a' of p</script>
+</body>
+</html>

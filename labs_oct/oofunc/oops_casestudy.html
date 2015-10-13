@@ -1,0 +1,61 @@
+<html>
+<head>
+</head>
+<body>
+Entity Inheritance
+<script>
+"use strict";
+function Entity(userId, createdDate, id) {
+	this.userId = userId;
+	this.createdDate = createdDate;
+	this.id = this.generator();
+}
+//Entity.prototype = Object.create();
+Entity.prototype.generator = (function() {
+	var counter = 0;
+	var offset = 100;
+	return function() {
+		counter++;
+		return offset + counter;
+	};
+})();
+
+Entity.prototype.toString = function() {
+	var str = "[";
+	var keys = Object.keys(this);
+	for (var k in keys) {
+		str += "[" + keys[k] + "=" + this[keys[k]] + "]";
+	}
+	return str + "]";
+};
+Entity.prototype.equals = function(another) {
+	if (another instanceof Entity) {
+		return (this.id == another.id);
+	} else {
+		return false;
+	}
+};
+
+function Customer(userId, createdDate, id) {
+	Entity.call(this, userId, createdDate, id);
+	this.name = arguments[3];
+	this.address = arguments[4];
+}
+Customer.prototype = Object.create(Entity.prototype);
+Customer.prototype.constructor = Customer;
+Customer.prototype.equals = function(another) {
+	if (another instanceof Customer) {
+		return (this.name == another.name);
+	} else {
+		return false;
+	}
+};
+var c1 = new Customer("arun", new Date(), -1, "Arun", "Bangalore");
+var c2 = new Customer("arun", new Date(), -1, "Arun", "Bangalore");
+var c3 = new Customer("arun", new Date(), -1, "Arun", "Bangalore");
+console.log(c1.toString());
+console.log(c2.toString());
+console.log(c1.equals(c2));
+</script>
+</body>
+</html>
