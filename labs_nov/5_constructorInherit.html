@@ -1,0 +1,74 @@
+<html>
+<head>
+</head>
+<body>
+Javascript Objects
+<div id="output">
+</div>
+</body>
+<script>
+function toString() {
+	var str = "";
+	var own = Object.getOwnPropertyNames(this);
+	for (var index in own) {
+		str += own[index] + ":" + this[own[index]] + ",";
+	}
+	return str;
+}
+
+function Car(make, model, year,owner) {
+  this.make = make;
+  this.model = model;
+  this.year = year;
+  this.owner = owner;
+}
+
+function TravelCars(make, model, year, owner, agencyName, permitType) {
+	Car.call(this, make, model, year, owner);
+	this.agencyName = agencyName;
+	this.permitType = permitType;
+}
+Car.prototype.toString = function() {
+	return window.toString.call(this);
+};
+TravelCars.prototype = Object.create(Car.prototype);
+
+var t1 = new TravelCars("Eagle", "Talon TSi", 1993, "arun", "ola", "NP");
+
+TravelCars.prototype.getAgencyName = function() {
+	return this.agencyName;
+};
+
+console.log(t1.make);
+console.log(t1.toString());
+console.log(t1.getAgencyName());
+var mycar = new Car("Eagle", "Talon TSi", 1993);
+var kenscar = new Car("Nissan", "300ZX", 1992);
+var vpgscar = new Car("Mazda", "Miata", 1990);
+
+/*
+Car.prototype = Object.create( {
+		toString : function() {
+			return window.toString.call(this);
+		}
+	}
+);*/
+
+function Person(name, age, sex) {
+  this.name = name;
+  this.age = age;
+  this.sex = sex;
+  this.toString = function() {
+	return window.toString.call(this);
+  };
+}
+var rand = new Person("Rand McKinnon", 33, "M");
+var ken = new Person("Ken Jones", 39, "M");
+mycar.owner = rand;
+kenscar.owner = ken;
+var newcar = new Car("Maruti", "800", 2015, new Person("Arun", 1, "M")); 
+console.log(newcar.toString());
+console.log(mycar.toString());
+console.log(rand.toString());
+</script>
+</html>

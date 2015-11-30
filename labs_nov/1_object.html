@@ -1,0 +1,46 @@
+<html>
+<head>
+</head>
+<body>
+Javascript Objects
+<div id="output">
+</div>
+</body>
+<script>
+var baseObject = new Object();
+baseObject.name = "Base Object";
+baseObject.prop1 = "property 1";
+baseObject.fun1 = function() {
+	console.log(this.toString());
+	
+	return this.name + this.prop1;
+};
+baseObject.toStringDeep = function() {
+	var str = "";
+	for(var key in this) {
+		//if (Object.hasOwnProperty(key)) {
+			if (typeof this[key] != "function") {
+				str += key + ":" + this[key] + ",";
+			}
+		//}
+	}
+	return str;
+};
+baseObject.toString = function() {
+	var str = "";
+	var own = Object.getOwnPropertyNames(this);
+	for (var index in own) {
+		str += own[index] + ":" + this[own[index]] + ",";
+	}
+	return str;
+};
+//console.log(baseObject.fun1());
+//document.getElementById("output").innerHTML = baseObject.fun1();
+
+var subObject = Object.create(baseObject);
+baseObject.name = "Base Obj modified";
+subObject.name = "Sub obj name";
+console.log("subobject toString " + subObject.toString());
+document.getElementById("output").innerHTML  = subObject.toString()
+</script>
+</html>
