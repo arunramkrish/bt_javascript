@@ -1,0 +1,47 @@
+<html>
+<head>
+</head>
+<body>
+Javascript Objects
+<div id="output">
+</div>
+</body>
+<script>
+// The following variables are defined in the global scope
+var num1 = 20,
+    num2 = 3,
+    name = "Chamahk";
+
+// This function is defined in the global scope
+function multiply() {
+  return num1 * num2;
+}
+
+multiply(); // Returns 60
+
+// A nested function example
+function getScore (w1, w2) {
+  var num1 = 2,
+      num2 = 3;
+	  
+	  if (!w1) {
+		w1 = 1;
+	  }
+	  
+	  if (!w2) {
+		w2 = 1;
+	  }
+  
+  function add() {
+    return name + " scored " + (num1*w1 + num2*w2);
+  }
+  
+  return add;
+}
+var add1 = getScore();
+var add2 = getScore(0.5, 0.5);
+console.log(add1()); // Returns "Chamahk scored 5"
+console.log(add2()); 
+
+</script>
+</html>

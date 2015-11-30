@@ -21,7 +21,11 @@ function Car(make, model, year,owner) {
   this.model = model;
   this.year = year;
   this.owner = owner;
+  function print() {
+	console.log("Cars print");
+  }
 }
+Car.print();
 
 function TravelCars(make, model, year, owner, agencyName, permitType) {
 	Car.call(this, make, model, year, owner);

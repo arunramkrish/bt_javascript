@@ -1,0 +1,63 @@
+<html>
+<head>
+</head>
+<body>
+Javascript Objects
+<div id="output">
+</div>
+</body>
+<script>
+(function() {
+var testData = ["a1", "b1", "c1", {p1:"p1"}, "d1"];
+
+function printContentsWithDelay(contents, delay) {
+	for (var i=0;i<contents.length;i++) {
+		/*
+		(function(d) {
+			setTimeout(function() {
+				console.log("Content at " + d + "= " + contents[d]);
+			},delay * d);
+		})(i);*/
+		print(i);
+	}
+	
+	function print(d) {
+		setTimeout(function() {
+				console.log("Content at " + d + "= " + contents[d]);
+			},delay * d);
+	}
+	
+}
+
+printContentsWithDelay(testData, 5000);
+
+function Car(n) {
+	var name = n;
+	this.getName = function() {
+		return name;
+	};
+	this.setName = function(s) {
+		name = s;
+	};
+}
+var c = new Car("BMW");
+console.log(c.getName());
+
+function myModuleImpl() {
+	function do1() {
+		console.log("Doing 1");
+	}
+	function do2() {
+		console.log("Doing 2");
+	}
+	
+	return {
+		contract1: do1,
+		contract2: do2
+	};
+}
+var myModule = myModuleImpl();
+myModule.contract1();
+})();
+</script>
+</html>
