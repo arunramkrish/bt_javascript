@@ -1,3 +1,5 @@
+Day 1
+-------------------------------
 1. Grammar and Types - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Grammar_and_Types
 
 2. Control Flow and Error handling - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Control_flow_and_error_handling
@@ -21,5 +23,12 @@
 11. Array API - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array
 
 12. Promise - https://github.com/mdn/promises-test/blob/gh-pages/index.html
+
+Day 2
+----------------------------------------
+13. AJAX API - https://developer.mozilla.org/en-US/docs/AJAX/Getting_Started
+
+14. 
+
 
 
