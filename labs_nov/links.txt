@@ -1,0 +1,25 @@
+1. Grammar and Types - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Grammar_and_Types
+
+2. Control Flow and Error handling - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Control_flow_and_error_handling
+
+3. Loops and iterations - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Loops_and_iteration
+
+4. Working with Objects - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Working_with_Objects
+
+5. Object API - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object
+
+6. Object Oriented Javascript - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Introduction_to_Object-Oriented_JavaScript
+
+7. Object.prototype - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/prototype
+
+8. Inheritance via Prototype - https://developer.mozilla.org/en/docs/Web/JavaScript/Inheritance_and_the_prototype_chain
+
+9. Functions https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions
+
+10. Function API - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function
+
+11. Array API - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array
+
+12. Promise - https://github.com/mdn/promises-test/blob/gh-pages/index.html
+
+
