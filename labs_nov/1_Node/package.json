@@ -1,0 +1,12 @@
+{
+  "name": "1_node",
+  "version": "1.0.0",
+  "description": "First nodejs project",
+  "main": "app.js",
+  "scripts": {
+    "test": "node test.js",
+	"start":"node app.js"
+  },
+  "author": "BT",
+  "license": "ISC"
+}
