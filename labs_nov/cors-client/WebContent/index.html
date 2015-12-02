@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Grid Control</title>
+<script type="text/javascript" src="scripts/datagrid/model.js"></script>
+<script type="text/javascript" src="scripts/datagrid/view.js"></script>
+<script type="text/javascript" src="scripts/datagrid/controller.js"></script>
+</head>
+<body>
+	Grid Control Demo
+	<div id="gridContainer"></div>
+</body>
+<script>
+	var dataUrl = "http://localhost:8081/gridcontrol/corsServer.jsp";
+	var adapter = function(serverData) {
+		var gridModel = {};
+		gridModel.title = serverData.teamName + " " + serverData.totalScore
+				+ "/" + serverData.wickets + " in " + serverData.overs
+				+ " overs";
+		gridModel.rows = serverData.scores;
+		
+		gridModel.rows.sort(function(r1, r2) {
+			if (r1.name < r2.name) {
+				return -1;
+			} else if (r1.name > r2.name) {
+				return 1;
+			} else {
+				return 0;
+			}
+		});
+		return gridModel;
+	};
+	var columnDescriptor = {
+		"playerName" : {
+			title : function() {
+				return "<span>Player Name</span>";
+			},
+			value : function(record) {
+				return "<span>" + record.name + "</span>";
+			}
+		},
+		"playerStatus" : {
+			title : function() {
+				return "<span>Status</span>";
+			},
+			value : function(record) {
+				return "<span>" + record.outType + " " + record.bowler + "</span>";
+			}
+		},
+		"playerRuns" : {
+			title : function() {
+				return "<span>Runs</span>";
+			},
+			value : function(record) {
+				return "<span>" + record.runs + "(" + record.ballsFaced + ")</span>";
+			}
+		}
+	};
+	var columnsToShow = ["playerName", "playerStatus", "playerRuns"];
+	
+	var descriptor = {
+			dataUrl : dataUrl,
+			modelAdapter : adapter,
+			columnDescriptor : columnDescriptor,
+			columnsToShow : columnsToShow,
+			rowClicked : function (record, i) {
+				console.log(record.name + " at index " + i);
+			}
+	};
+	
+	new datagrid.controller.GridControl("gridContainer", descriptor);
+</script>
+</html>

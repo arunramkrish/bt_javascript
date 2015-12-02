@@ -1,0 +1,13 @@
+CACHE MANIFEST
+# v1 2015-12-02 10:10
+# This is another comment
+# todo.html
+images/img_logo.png
+
+# Use from network if available
+NETWORK:
+todoAdmin.html
+
+# Fallback content
+FALLBACK:
+/ fallback.html

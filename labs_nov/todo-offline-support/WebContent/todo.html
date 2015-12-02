@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html manifest="todo.appcache">
+<head>
+</head>
+<body onload="loadTodos();">
+Local Storage APIs
+<div id="todoFormDiv">
+	<form id="todoForm" action="#" onsubmit="addTodo(this);return false;">
+		<span>Todo Text</span><span><input type="text" name="todoText" id="todoText"/></span>
+		<br/>
+		<span>Due Date</span><span><input type="text" name="dueDate" id="dueDate"/></span>
+		<br/>
+		<input type="submit" value="Add"/>
+	</form>
+</div>
+<div id="todoTableDiv">
+	<table id="todoTable">
+		<tr>
+			<th>Title</th>
+			<th>Due Date</th>
+		</tr>
+	</table>
+</div>
+</body>
+<script>
+function loadTodos() {
+	var existingTodos = window.localStorage.getItem("todos");
+	if (existingTodos == null) {
+		return;
+	} else {
+		existingTodos = JSON.parse(existingTodos);
+	}
+	var tableElement = document.getElementById("todoTable");
+	for (var i=0;i<existingTodos.length;i++) {
+		var todoObj = existingTodos[i];
+		
+		var rowElement = tableElement.insertRow();
+		var cell = rowElement.insertCell();
+		cell.innerHTML = "<span>" + todoObj.todoText;
+		
+		cell = rowElement.insertCell();
+		cell.innerHTML = "<span>" + todoObj.dueDate;
+	
+	}
+}
+function addTodo(formObj) {
+	var todoObj = {
+		todoText : formObj["todoText"].value,
+		dueDate : formObj["dueDate"].value
+	};
+	var existingTodos = window.localStorage.getItem("todos");
+	if (existingTodos == null) {
+		existingTodos = [];
+	} else {
+		existingTodos = JSON.parse(existingTodos);
+	}
+	existingTodos.push(todoObj);
+	window.localStorage.setItem("todos", JSON.stringify(existingTodos));
+	
+	formObj["todoText"].value = "";
+	formObj["dueDate"].value = "";
+	
+	var tableElement = document.getElementById("todoTable");
+	var rowElement = tableElement.insertRow();
+	var cell = rowElement.insertCell();
+	cell.innerHTML = "<span>" + todoObj.todoText;
+	
+	cell = rowElement.insertCell();
+	cell.innerHTML = "<span>" + todoObj.dueDate;
+	
+}
+</script>
+</html>

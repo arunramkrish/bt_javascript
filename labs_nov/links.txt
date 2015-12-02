@@ -38,13 +38,14 @@ Day 2
 
 18. JSON Test (to test JSONP) - http://www.jsontest.com/ also http://jsfiddle.net/echo/jsonp/?name=arun&callback=myjsonphandler
 
-19. 
+Day 3
+-------------------------------------------------
 
-CORS
-App cache
+
+todo
 Angular 2
-
 Bootstrap style
+performance
 
 
 
