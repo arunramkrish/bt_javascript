@@ -9,4 +9,14 @@
     <welcome-file>default.htm</welcome-file>
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
+  <servlet>
+    <description></description>
+    <display-name>CorsServlet</display-name>
+    <servlet-name>CorsServlet</servlet-name>
+    <servlet-class>com.bt.servlet.CorsServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CorsServlet</servlet-name>
+    <url-pattern>/api/scores.json</url-pattern>
+  </servlet-mapping>
 </web-app>

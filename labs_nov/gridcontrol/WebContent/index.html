@@ -12,7 +12,7 @@
 	<div id="gridContainer"></div>
 </body>
 <script>
-	var dataUrl = "data/scores.json";
+	var dataUrl = "http://localhost:8080/gridcontrol/api/scores.json";
 	var adapter = function(serverData) {
 		var gridModel = {};
 		gridModel.title = serverData.teamName + " " + serverData.totalScore

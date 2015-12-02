@@ -1,0 +1,29 @@
+<html>
+    <head>
+    </head>
+    <body>
+        <div id = 'twitterFeed'></div>
+        <script>
+        function myjsonp(dataWeGotViaJsonp){
+            var text = '';
+            var len = dataWeGotViaJsonp.length;
+            /*
+            for(var i=0;i<len;i++){
+                twitterEntry = dataWeGotViaJsonp[i];
+                text += '<p><img src = "' + twitterEntry.user.profile_image_url_https +'"/>' + twitterEntry['text'] + '</p>'
+            }
+            */
+            document.getElementById('twitterFeed').innerHTML = JSON.stringify(dataWeGotViaJsonp);
+			
+			
+        }
+		function loadJsonp(url, callback) {
+			var script = document.createElement("script");
+			script.src = url + "&callback=" + callback;
+			document.head.appendChild(script);
+		}
+		//loadJsonp("http://api.openweathermap.org/data/2.5/weather?lat=12.942063700000002&lon=77.6944728", "myCallback");
+		loadJsonp("http://jsfiddle.net/echo/jsonp/?name=arun&phone=95559", "myjsonp");
+        </script>
+    </body>
+</html>

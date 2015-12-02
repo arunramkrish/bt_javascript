@@ -28,7 +28,23 @@ Day 2
 ----------------------------------------
 13. AJAX API - https://developer.mozilla.org/en-US/docs/AJAX/Getting_Started
 
-14. 
+14. Node, Element, HTMLElement, HTMLTableElement, HTMLTableRowElement - https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableRowElement/insertCell
+
+15. Javascript design patterns - http://addyosmani.com/resources/essentialjsdesignpatterns/book/
+
+16. Webstorage - https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API/Using_the_Web_Storage_API
+
+17. CORS (Cross Origin Resource Sharing) - https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS
+
+18. JSON Test (to test JSONP) - http://www.jsontest.com/ also http://jsfiddle.net/echo/jsonp/?name=arun&callback=myjsonphandler
+
+19. 
+
+CORS
+App cache
+Angular 2
+
+Bootstrap style
 
 
 
