@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Simple MEAN stack demo</title>
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.1/angular.min.js"></script>
+</head>
+<body ng-app="projectMgmt">
+	<div ng-controller="ProjectFormController as pjtFrmCtrl">
+  <b>Project:</b>
+  <div>
+    <span>{{pjtFrmCtrl.message}}</span>
+  <div>
+    Title: <input type="text" ng-model="pjtFrmCtrl.title" >
+  </div>
+  <div>
+    Description: <input type="text" ng-model="pjtFrmCtrl.description" >
+  </div>
+  <div>
+    <button class="btn" ng-click="pjtFrmCtrl.saveProject()">Save Project</button>
+  </div>
+</div>
+</body>
+<script type="text/javascript">
+angular.module('projectMgmt', ['service'])
+.controller('ProjectFormController', ['$scope','pjtService', function($scope, pjtService) {
+  this.title = "";
+  this.description = "";
+  this.message = "";
+
+  function onSuccess(response) {
+    this.message = "Successfully created project";
+  }
+  this.saveProject = function () {
+    pjtService.saveProject({title: this.title, description : this.description}, onSuccess, this);
+  };
+}]);
+</script>
+<script type="text/javascript">
+angular.module('service', [])
+.factory('pjtService', ['$http', function($http) {
+  var BASE_URL = "api/projects";
+  var saveProject = function (project, callback, context) {
+    $http({
+      method: 'GET',
+      url: 'BASE_URL'
+    }).then(function successCallback(response) {
+                callback.call(context, response);
+              }, 
+            function errorCallback(response) {
+                console.log("Error while saving project");
+            }
+          );
+    };
+  
+  var getProjects = function (callback, context) {
+    $http({
+      method: 'GET',
+      url: 'BASE_URL'
+    }).then(function successCallback(response) {
+                callback.call(context, response);
+              }, 
+            function errorCallback(response) {
+                console.log("Error while saving project");
+            }
+          );
+    };
+
+  return {
+    saveProject: saveProject,
+    getProjects : getProjects
+  };
+}]);
+</script>
+</html>
