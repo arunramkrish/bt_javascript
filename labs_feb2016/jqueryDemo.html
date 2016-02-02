@@ -1,0 +1,26 @@
+<!doctype html>
+<html>
+<head>
+<script>
+</script>
+</head>
+<body onload="docLoaded()">
+<div id="tableDiv">
+</div>
+</body>
+<script src="http://code.jquery.com/jquery-1.12.0.js"></script>
+<script>
+function docLoaded() {
+    console.log("Doc loaded");
+}
+$(function() {
+    console.log("jquery loaded");
+    $("#tableDiv").html("Jquery adding text");
+    var obj = $("#tableDiv").append("<span>text</span>");
+    console.log(typeof obj);
+});
+$(document).ready(function() {
+    console.log("jquery doc loaded");
+});
+</script>
+</html>
