@@ -1,0 +1,43 @@
+<!doctype html>
+<html>
+<head>
+<script>
+</script>
+</head>
+<body>
+    <div id="tableDiv">
+    </div>
+<script>
+"use strict";
+var emp1 = {id:1, name:"emp1", address : "addr1", contactNo: "34567643"};
+var emp2 = {id:1, name:"emp2", address : "addr2", contactNo: "34567643"};
+var emp3 = {id:1, name:"emp3", address : "addr3", contactNo: "34567643"};
+var emp4 = {id:1, name:"emp4", address : "addr4"};
+var emp5 = {id:1, name:"emp5", address : "addr5"};
+
+    var employees = [emp1, emp2, emp3, emp4, emp5];
+    
+    var tableElmt = document.createElement("table");
+
+    var thead = tableElmt.createTHead();
+    var headRow = thead.insertRow()        
+    var propNames = Object.getOwnPropertyNames(employees[0]);
+    
+    for(var prop in propNames) {
+        var headCell = headRow.insertCell();
+        
+        headCell.innerHTML = propNames[prop];
+    }
+    
+    for(var rows = 0; rows < employees.length ; rows++) {
+        var recordRow = tableElmt.insertRow();
+        for(var prop in propNames) {
+            var dataCell = recordRow.insertCell();
+        
+            dataCell.innerHTML = employees[rows][propNames[prop]];
+        }   
+    }
+    document.getElementById("tableDiv").appendChild(tableElmt);
+</script>
+</body>
+</html>

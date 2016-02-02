@@ -1,0 +1,60 @@
+<!doctype html>
+<html>
+<head>
+<script>
+</script>
+</head>
+<body>
+<script>
+"use strict";
+function timerCallback(index) {
+    console.log("I am polling for " + index + " time");
+}
+
+function initTimer(callback, interval, times) {
+    for(var i=0;i<times;i++) {
+        createCallback(i, callback, interval);
+    }
+}
+function createCallback(index, callback, interval){
+    setTimeout(function() {
+                console.log(index);
+                callback(index);
+    }, interval);
+}
+initTimer(timerCallback, 1, 5);
+    
+function Point(x,y) {
+    var localX = x;
+    var localY = y;
+    var localZ = 10;
+    
+    this.getX = function() {
+        return localX;
+    };
+    this.getY = function() {
+        return localY;
+    };
+    this.setX = function(newX) {
+        localX = newX;
+    };
+    this.setY = function(newY) {
+        localY = newY;
+    };
+}
+var p1 = new Point(5,6);
+p1.x = 9;
+p1.y = 1;
+var propNames = Object.getOwnPropertyNames(p1);
+for (var i in propNames) {
+    console.log("i: " + propNames[i] + " value: " + p1[i])
+}
+
+propNames = Object.keys(p1);
+for (var i in p1) {
+    console.log("i: " + p1[i] + " value: " + p1[i])
+}
+
+</script>
+</body>
+</html>

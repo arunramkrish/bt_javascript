@@ -1,0 +1,89 @@
+<!doctype html>
+<html>
+<head>
+<script>
+</script>
+</head>
+<body>
+<script>
+"use strict";
+var jsonWay1 = {"prop2": "I am here already"};
+jsonWay1.prop1 = "prop1 value";
+jsonWay1.method1 = function() {
+	return this.prop1 +"<br/>";// + arguments.callee;
+};
+document.write(jsonWay1.method1());
+
+var constrWay = new Object();
+constrWay.prop1 = "prop1 value1 from constr way";
+constrWay.method1 = function() {
+	return "<br/>" + this.prop1 + "<br/>";// +  arguments.callee;
+};
+document.write(constrWay.method1());
+
+//constructor
+var MyFirstClass = function() {
+	this.prop1 = "from class " + arguments[0];
+	this.method1 = function() {
+		return "I am defined inside class / constr fn" + "<br/>";
+	};
+}
+MyFirstClass.prototype.method1 = function() {
+	return "I belong to all objects of MyFirstClass as long as I am not overridden " + this.prop1;
+};
+
+var myObj = new MyFirstClass("obj1");
+document.write(myObj.method1());
+
+var myObj2 = new MyFirstClass("obj2");
+document.write(myObj2.method1());
+
+MyFirstClass.prototype.method2 = function() {
+return "I belong to all objects of MyFirstClass " + this.prop1;
+};
+
+document.write(myObj2.method2());
+document.write(myObj.method2());
+
+//Prototype
+var myObjFromProto = Object.create(null);
+console.log(myObjFromProto);
+
+var myObjFromProto2 = Object.create({});
+var myObjFromProto2 = Object.create(new Object());
+console.log(myObjFromProto2);
+
+var myObj3 = Object.create({});
+myObj3.prototype = MyFirstClass.prototype;
+myObj3.prototype.constructor = MyFirstClass;
+//Object.getPrototypeOf(myObj3).constructor = MyFirstClass;
+MyFirstClass.call(myObj3, "obj3");
+
+function MySecondClass() {
+    MyFirstClass.apply(this, arguments);
+    this.prop21 = "secondClass";
+}
+MySecondClass.prototype = Object.create(MyFirstClass.prototype);
+var mySecondObj = new MySecondClass();
+MySecondClass.prototype.secondMethod = function() {
+    return "secondMethod";
+};
+MySecondClass.prototype.method2 = function() {
+return "I belong to all objects of SecondClass as it is overridden " + this.prop1;
+};
+    
+var jsonObj = {"prop21" : "from json21", "prop1" : "from json11"};
+var my2ndFromJson = Object.assign(new MySecondClass(), jsonObj);
+    
+console.log(mySecondObj.secondMethod());
+//console.log(myObj.secondMethod());
+
+var my3rdObject = Object.create(Object.create(MySecondClass.prototype), {"prop3rdLevel": {
+    configurable: false,
+    value : "prop3value"
+}});
+delete my3rdObject.prop3rdLevel;
+console.log(my3rdObject);
+</script>
+</body>
+</html>

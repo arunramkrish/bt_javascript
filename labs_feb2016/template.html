@@ -1,0 +1,64 @@
+<!doctype html>
+<html>
+<head>
+<script>
+</script>
+</head>
+<body>
+<script>
+document.write("Hello Adv Javascript");
+(function(){
+document.write("Temporary inline Javascript");
+})();
+
+var msgFn = function nameFn() {
+	return "Msg from function";
+};
+//will not work
+//document.write("Name fn " + nameFn());
+
+document.write(msgFn() + "<br/>");
+
+function Messenger (msg) {
+	this.message = "Hello " + msg;
+}
+//this.myMessage = "My message outside";
+//document.write(this.myMessage + "<br/>");
+Messenger("BT");
+document.write(window.message);
+
+var messenger = new Messenger("I am new Object"); 
+document.write(window.messenger.message + "<br/>");
+
+function displayMsg(fn) {
+	console.log("Message " + fn());
+}
+displayMsg(msgFn);
+displayMsg(Messenger);
+
+function Employee() {
+	this.id = "12345";
+	this.name = arguments[0];
+	
+	this.print = function() {
+		return this.id + ":" + this.name;
+	};
+}
+
+function Customer() {
+	this.cusName = "BT";
+}
+
+Messenger.call(this, "I am window");
+var emp = new Employee("Arun");
+Messenger.call(emp, "I am employee");
+document.write("<br/>" + emp.message + "</br>");
+document.write("<br/>" + emp.print()x + "</br>");
+
+var cus = new Customer();
+Messenger.apply(cus, ["I am customer"]);
+document.write("<br/>" + cus.message + "</br>");
+
+</script>
+</body>
+</html>
