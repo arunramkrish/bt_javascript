@@ -1,0 +1,101 @@
+<!doctype html>
+<html >
+  <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular.js"></script>
+  </head>
+  <body ng-app="myApp" ng-init="yourName='BT';">
+    <div>
+		<div>
+      <label>Name:</label>
+	  <div ng-controller="MyController">
+      <input type="text" ng-model="yourName" placeholder="Enter a name here">
+      <hr>
+      <h1>Hello {{yourName}}!</h1>
+	  <button value="Click" ng-click="sayHello();">Click</button>
+	  </div>
+	  </div>
+	  <div ng-controller="MyController">
+		  <input type="text" ng-model="yourName" placeholder="Enter a name here">
+		  <hr>
+		  <h1>Hello {{yourName}}!</h1>
+			<div ng-controller="ButtonController">
+				<button value="Click" ng-click="sayHello();">Click</button>
+			</div>
+	  </div>
+	  <div ng-controller="RouteController">
+		<span>Enter URL</span><input type="text" ng-model="url"/><br/>
+		<span>Handler for this URL</span><input type="text" ng-model="urlHandler"/><br/>
+		<button value="showHandler" ng-click="showHandler();">Show Handler</button>
+	  </div>
+    </div>
+  </body>
+  <script>
+	var appModule = angular.module("myApp",["myModule","myRoutes"]);
+	
+	appModule.controller("RouteController", function($scope, myRoute) {
+		$scope.urlHandler = "";
+		$scope.showHandler = function() {
+			if (myRoute[$scope.url]) {
+				$scope.urlHandler = myRoute[$scope.url];
+			}
+		};
+	});
+	
+	var MyController = function(s, g, f) {
+		s.yourName = "Angular";
+		s.sayHello = function() {
+			alert(g.prefix + this.yourName);
+			new f(this.yourName).greet();
+		};
+	};
+	MyController.$inject = ["$scope", "greeting", "greeter"];
+	
+	appModule.controller("MyController", MyController);
+	
+	/*
+	appModule.controller("MyController", ["$scope", "greeting", function(s, g) {
+		s.yourName = "Angular";
+		s.sayHello = function() {
+			alert(g.prefix + this.yourName);
+		};
+	}]);
+	*/
+	appModule.controller("ButtonController", function($scope) {
+		$scope.sayHello = function() {
+			alert("Hi " + this.yourName);
+		};
+	});
+	function sayHello() {
+		console.log("Hello " + yourName);
+	}
+	var module2 = angular.module("myModule", []);
+	module2.constant("greeting", {prefix: "Namaste"
+	});
+	
+	module2.factory("greeter", function() {
+		function MyConstr(who)  {
+			this.greet = function() {
+				console.log("Greeting from greeter. Hi "  + who);
+			}
+		}
+		return MyConstr;
+	});
+	
+	var myRoute = angular.module("myRoutes", []);
+	myRoute.provider("myRoute", ["greeting", function (g) {
+		var urlMapping = {"home" : "showHomePage"};
+		this.mapUrl = function(url, handler) {
+			urlMapping[url] = handler;
+		};
+		this.$get = ["greeter", function(g) {
+			new g();
+			return urlMapping;
+		}];
+	}]);
+	
+	appModule.config(["myRouteProvider", function(myRouteProvider) {
+		myRouteProvider.mapUrl("employees", "showEmployeePage");
+		myRouteProvider.mapUrl("customers", "showCustomerPage");
+	}]);
+  </script>
+</html>
