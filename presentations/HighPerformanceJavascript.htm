@@ -1,0 +1,1101 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>High Performance Javscript</title>
+<link rel="stylesheet" href="./resources/training.css">
+<link rel="stylesheet" href="./resources/recipes.css">
+<script src="./resources/jquery.js"></script>
+<script src="./resources/jquery.chili.js"></script>
+<script src="./resources/recipes.js"></script>
+<script src="./resources/training.js"></script>
+</head>
+<body>
+<h3 class="">High Performance Javascript</h3>
+<div id="area">
+<div id="description" style="margin:40px;"></div>
+<pre id="pre" class="javascript"></pre>
+<form id="form">
+<div class="buttons" style="display: none;">
+<input type="submit" value="Run" class="run" id="run">
+<input type="button" id="prev" value="<< Prev">
+<input type="button" id="next" value="Next >>">
+</div>
+<div id="container">
+  <textarea id="code" wrap="off" style="height: 500px;display:none;"></textarea>
+	<ol id="results"></ol>
+	<p id="cite">Double-click the code to edit the tutorial and try your own code.</p>
+</div>
+</form>
+</div>
+<dl style="display: none;">
+<dt>Script Positioning</dt>
+<dd></dd>
+<dt>Script tag</dt>
+<dd><div><ul class="bullets-level1"><li>Browser no way knows how script impacts the DOM</li><li>Browser stops processing the page as it comes in, executes the JavaScript code, then continues parsing and rendering the page</li></ul></div><pre><xmp><html>
+<head>
+<title>Script Example</title>
+</head>
+<body>
+<p>
+<script type="text/javascript">
+document.write("The date is " + (new Date()).toDateString());
+</script>
+</p>
+</body>
+</html></xmp></pre></dd>
+<dt>DONT Load scripts on top</dt>
+<dd><div><ul class="bullets-level1"><li>Script tag blocks the
+page from continuing to render until it has fully downloaded and executed the Java-
+Script code</li>
+<li>Browsers don't start rendering anything on the page until the opening &lt;body&gt; tag is
+encountered</li>
+<li>Timeline graph shows files downloaded in sequence with time interval between them to execute the code</li>
+<li>Latest browsers download scripts in parallel but the page (including other resources like images) still has to wait for it to complete and the code to get executed</li>
+<br/>
+<img src="./resources/images/timelinegraph.png"/>
+</div><pre><xmp><html>
+<head>
+<title>Script Example</title>
+<-- Example of inefficient script positioning -->
+<script type="text/javascript" src="file1.js"></script>
+<script type="text/javascript" src="file2.js"></script>
+<script type="text/javascript" src="file3.js"></script>
+<link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+<p>Hello world!</p>
+</body>
+</html></xmp></pre></dd>
+<dt>References</dt>
+<dd><div><ul class="bullets-level1"><li><a href="http://developer.yahoo.com/performance/">http://developer.yahoo.com/performance/</a></li></ul></div></dd>
+<dt>DO Load scripts as close to body</dt>
+<dd><pre><xmp><html>
+<head>
+<title>Script Example</title>
+<link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+<p>Hello world!</p>
+<-- Example of recommended script positioning -->
+<script type="text/javascript" src="file1.js"></script>
+<script type="text/javascript" src="file2.js"></script>
+<script type="text/javascript" src="file3.js"></script>
+</body>
+</html></xmp></pre></dd>
+<dt>Grouping Scripts</dt>
+<dd></dd>
+<dt>DONT Place MORE number of &lt;script&gt; tags in the page</dt>
+<dd><div><ul class="bullets-level1"><li>Every &lt;script&gt; tag halts the execution of page</li>
+<li>&lt;script&gt; tag after &lt;link&gt; containing external stylesheet blocks execution of page till stylesheet is loaded fully to give correct style information to script</li><li>Downloading one
+single 100 KB file will be faster than downloading four 25 KB files</li></ul></div></dd>
+<dt>Asynchronous Javascript loading</dt>
+<dd><div><ul class="bullets-level1"><li>Use the defer attribute with 'async' of the &lt;script&gt; tag</li>
+  <li>Dynamically create &lt;script&gt; elements to download and execute the code</li>
+  <li>Download the JavaScript code using an XHR object, and then inject the code into the page</li>
+</ul></div></dd>
+
+<dt>Managing Scope</dt>
+<dd></dd>
+<dt>Scope Chains and Identifier Resolution</dt>
+<dd><div><ul class="bullets-level1">
+<li>[[Scope]] is property of functions, accessible only by JS engine & not through code</li>
+<li>scope chain - collection of objects representing scope, determines data the function can access</li>
+<li>each object in scope chain is called a variable object, contains variables as key-value pairs</li>
+<li>Scope chain for an example function add (when the function is created ): </li></ul>
+<img src="./resources/images/scope_Chain_for_Add_function.png"/>
+</div>
+<pre>
+function add(num1, num2){
+var sum = num1 + num2;
+return sum;
+}</pre>
+</dd>
+
+<dt>Scope Chains and Identifier Resolution ...contd</dt>
+<dd><div>During function execution : <ul class="bullets-level1">
+<li>an Execution context object is created which is unique to one particular execution of function </li>
+<li>scope chain is then initialized with objects from the [[Scope]] property & the values are copied</li>
+<li>new object called activation object is created which holds all the local data needed for execution</li>
+<li>activation object is then pushed to front of scope chain</li>
+<li>Identifier resolution takes place each time a variable is encountered, scope chain is 
+searched for an identifier with same name, search begins in the front of scope chain </li>
+<li>Execution context & Scope chain for the add() function is given below: </li></ul>
+<img src="./resources/images/scope_chain_execution.png"/>
+</div>
+</dd>
+
+<dt>Scope Chains and Identifier Resolution ...contd</dt>
+<dd><div>Identifier resolution <ul class="bullets-level1">
+<li>Identifier resolution takes place each time a variable is encountered </li>
+<li>scope chain is searched for an identifier with same name, search begins in the front of scope chain </li>
+<li>if found the identifier is used, else search continues with next object in chain</li>
+<li> this search process determines the performance</li>
+</ul>
+</div>
+</dd>
+
+<dt>Identifier Resolution Performance</dt><dd><div>
+<ul class="bullets-level1">
+<li>deeper into the execution context's scope chain an identifier exists, the slower it is to access for both reads and writes</li>
+<li>local variables are faster to access within functions, global vars are slower</li>
+<li>Below figure shows detail of speed of id resolution based on depth</li>
+</ul>
+<img src="./resources/images/id_Resolution.png"/>
+</div></dd>
+<!--
+<dt>Scope Chain Augmentation</dt><dd><div><ul class="bullets-level1"><li></li></ul></div></dd>
+<dt>Dynamic Scopes</dt><dd><div><ul class="bullets-level1"><li></li></ul></div></dd>
+<dt>Closures, Scope and Memory</dt><dd><div><ul class="bullets-level1"><li></li></ul></div></dd>
+-->
+<dt>Object Members</dt><dd></dd>
+<dt>Prototype</dt><dd><div><ul class="bullets-level1">
+<li>an object that serves as the base of another object, defining & implementing members that a new object must have</li>
+<li>is shared among all instances of a given object type</li>
+<li>an object is tied to its prototype by an internal property</li>
+<li>Firefox, Safari, and Chrome expose this property to developers as __proto__</li>
+<li>objects have two types of members: instance members & prototype members</li>
+<li>Instance members exist directly on the object instance itself, prototype members inherited from object prototype.Below example title, publisher are instance members & toString() method is prototype member :</li></ul>
+</div><pre>
+var book = {
+title: "Javascript",
+publisher: "ABC Press"
+};
+log(book.toString()); //"[object Object]" </pre>
+</dd>
+<dt>Prototype ...contd.</dt><dd><div><ul class="bullets-level1">
+<li>resolving an object member is similar to resolving variable</li>
+<li>eg when book.toString() is called, the search for member named "toString" begins on the object instance but it is not found as it is not a member</li>
+<li>then search continues to prototype object where it is found & executed</li>
+<li>hasOwnProperty() method is used to find if the object has an instance member with a given name</li>
+<li>Example</li></ul>
+<img src="./resources/images/instance_prototype.png"/>
+</div><pre>
+var book = {
+title: "JavaScript",
+publisher: "ABC Press"
+};
+log(book.hasOwnProperty("title")); //true
+log(book.hasOwnProperty("toString")); //false
+log("title" in book); //true
+log("toString" in book); //true</pre>
+</dd>
+
+<dt>Prototype Chains</dt><dd><div><ul class="bullets-level1">
+<li>Use a constructor to create a prototype of another type</li>
+<li>Example</li>
+</ul><img src="./resources/images/prototype_chain.png"/></div>
+<pre>
+function Book(title, publisher){
+this.title = title;
+this.publisher = publisher;
+}
+Book.prototype.sayTitle = function(){
+log(this.title);
+};
+var book1 = new Book("JavaScript1", "ABC Press");
+var book2 = new Book("JavaScript2", "YXZ Press");
+log(book1 instanceof Book); //true
+log(book1 instanceof Object); //true
+book1.sayTitle(); //"JavaScript1"
+log(book1.toString()); //"[object Object]"
+</pre>
+</dd>
+
+<dt>Nested Members</dt><dd><div><ul class="bullets-level1">
+<li>Object member resolution process is done everytime a '.' is encountered</li>
+<li>Deeper the nested member, slower is data access</li>
+<li> example location.href is faster than window.location.href</li>
+</ul><img src="./resources/images/access_time_related_to_property_depth.png"/>
+</div></dd>
+
+<dt>Caching Object Member Values</dt><dd><div><ul class="bullets-level1">
+<li>if we have to read an object property more than one time in a function, it's best to store that property value in a local variable</li></ul></div>
+<pre>function hasEitherClass(element, className1, className2){
+return element.className == className1 || element.className == className2;
+}
+
+/** 
+use the below method of using local variables for better performance
+*/
+
+function hasEitherClass(element, className1, className2){
+var currentClassName = element.className;
+return currentClassName == className1 || currentClassName == className2;
+}</pre></dd>
+
+<dt>DOM Scripting</dt><dd></dd>
+<dt>DOM in the Browser inherently slow</dt><dd><div><ul class="bullets-level1">
+<li>Document Object Model (DOM) is a language-independent application interface (API) for working with XML and HTML documents</li>
+<li>DOM & JavaScript implementations are generally kept independent of each other</li>
+<li> Eg : in IE JavaScript implementation is called JScript and is stored in jscript.dll, while DOM is in mshtml.dll(internally called Trident)</li>
+<li>Google Chrome uses WebCore libraries from WebKit for rendering
+pages & implements its own JavaScript engine called V8.</li>
+<li>In Firefox, Spider-Monkey ( TraceMonkey) is the JavaScript implementation, a
+separate part of the Gecko rendering engine.</li>
+<li>Hence access to DOM is Inherently slow </li>
+</ul></div></dd>
+
+<dt>Inner HTML Vs DOM Methods</dt><dd><div><ul class="bullets-level1">
+<li>Using Inner HTML or DOM depends on the version of browser used</li>
+<li>Using innerHTML gives faster execution in most browsers in performance-critical operations that require updating a large part of the HTML page</li>
+<li>InnerHTML is better for older browser versions, whereas in newer versions DOM is preferred.</li>
+<li>For example : The benefit of using innerHTML over DOM methods to create a 1,000-row table;
+innerHTML is more than three times faster in IE6 and slightly slower in the latest WebKit browsers</li>
+</ul><img src="./resources/images/inner_html_vs_dom.png"/></div></dd>
+
+<dt>Cloning Nodes</dt><dd><div><ul class="bullets-level1">
+<li>Cloning nodes is more efficient in most browsers, but not by a big margin</li>
+<li>use element.cloneNode() (where element is an existing node) 
+     instead of document.createElement() </li>
+</ul></div></dd>
+
+<dt>Expensive HTML Collections</dt><dd><div><ul class="bullets-level1">
+<li>document.getElementsByName(), document.getElementsByClassName(), document.getElementsByTagName() are examples of collections</li>
+<li> Instead of the above use array-like lists as below for better performance :  </li>
+<li>document.images - All img elements on the page, 
+document.links - All a elements,
+document.forms - All forms,
+document.forms[0].elements - All fields in the first form on the page</li>
+<li> html collections are live, using the length property during looping is not recommended</li>
+</ul></div>
+<pre>function toArray(coll) {
+for (var i = 0, a = [], len = coll.length; i < len; i++) {
+a[i] = coll[i];
+}
+return a;
+}
+var coll = document.getElementsByTagName('div');
+var ar = toArray(coll);
+
+//slower
+function loopCollection() {
+for (var count = 0; count < coll.length; count++) {
+/* do nothing */
+}
+
+// faster
+function loopCopiedArray() {
+for (var count = 0; count < arr.length; count++) {
+/* do nothing */
+}
+}
+</pre></dd>
+
+<dt>Local variables when accessing collection elements</dt><dd><div><ul class="bullets-level1"><li>for any type of DOM access it's best to use a local variable when the same
+DOM property or method is accessed more than once</li>
+</ul></div>
+<pre>
+// slow
+function collectionGlobal() {
+var coll = document.getElementsByTagName('div'),
+len = coll.length,
+name = '';
+for (var count = 0; count < len; count++) {
+name = document.getElementsByTagName('div')[count].nodeName;
+name = document.getElementsByTagName('div')[count].nodeType;
+name = document.getElementsByTagName('div')[count].tagName;
+}
+return name;
+};
+// faster
+function collectionLocal() {
+var coll = document.getElementsByTagName('div'),
+len = coll.length,
+name = '';
+for (var count = 0; count < len; count++) {
+name = coll[count].nodeName;
+name = coll[count].nodeType;
+name = coll[count].tagName;
+}
+return name;
+};
+// fastest
+function collectionNodesLocal() {
+var coll = document.getElementsByTagName('div'),
+len = coll.length,
+name = '',
+el = null;
+for (var count = 0; count < len; count++) {
+el = coll[count];
+name = el.nodeName;
+name = el.nodeType;
+name = el.tagName;
+}
+return name;
+};
+</pre></dd>
+
+<dt>Navigating through the DOM</dt><dd><div><ul class="bullets-level1">
+<li>Using the nextSibling() method is better in IE than traversing child nodes</li></ul></div>
+<pre>function testNextSibling() {
+var el = document.getElementById('mydiv'),
+ch = el.firstChild,
+name = '';
+do {
+name = ch.nodeName;
+} while (ch = ch.nextSibling);
+return name;
+};
+
+/** versus
+*/
+
+function testChildNodes() {
+var el = document.getElementById('mydiv'),
+ch = el.childNodes,
+len = ch.length,
+name = '';
+for (var count = 0; count < len; count++) {
+name = ch[count].nodeName;
+}
+return name;
+};</pre></dd>
+<dt>Element Nodes</dt><dd><div><ul class="bullets-level1">
+<li>Use element nodes whenever available</li>
+</ul><img src="./resources/images/element_nodes.png"/></div></dd>
+
+<dt>Selectors API</dt><dd><div><ul class="bullets-level1">
+<li>Use CSS selectors for better performance</li>
+<li> eg : use var elements = document.querySelectorAll('#menu a'); </li>
+<li> instead of : var elements = document.getElementById('menu').getElementsByTagName('a');</li>
+<li> another method that could be used is querySelector() - for one node </li>
+</ul></div></dd>
+
+<dt>Repaints and Reflows</dt><dd><div><ul class="bullets-level1">
+<li>Two internal data structures used by browser are : </li>
+		- A DOM tree  : A representation of the page structure
+<br/>   - A render tree : A representation of how the DOM nodes will be displayed<br/>
+<li>Reflow : When a DOM change affects an element's geometry, the browser recalculates the geometry, invalidates the part of the render tree that was affected by the change & reconstructs the render tree</li>
+<li> Repaint : Once the reflow is complete, the browser redraws the affected parts of the screen in a process called repaint</li>
+</ul>
+</div></dd>
+
+<dt>Reflow - when does it happen?</dt><dd><div><ul class="bullets-level1">
+A reflow happens in one of the following ( when there is layout & geometry change) : 
+<li>Visible DOM elements are added or removed </i>
+<li>Elements change position</li>
+<li>Elements change size (because of a change in margin, padding, border thickness,
+<li>Content is changed, e.g., text changes or an image is replaced with one of a different
+size</li>
+<li>Page renders initially</li>
+<li>Browser window is resized</li>
+<li>	 Depending on type of change a smaller or larger part of the render tree needs to be recalculated. eg: when a scrollbar appears</li>
+</ul></div></dd>
+
+<dt>Queuing and Flushing Render Tree Changes</dt><dd><div><ul class="bullets-level1">
+<li>Reflow process can be optimized by queuing changes & performing them in batches</li>
+<li> However, when layout info needs to be retrieved, the queue may be forcefully flushed & all the changes get applied. Eg : when using properties scrollTop, scrollLeft, scrollWidth, offsetTop, etc.
+<li> During process of changing styles, it's better not to use the above properties</li></ul>
+</div>
+<pre>// setting and retrieving styles in succession
+var computed,
+tmp = '',
+bodystyle = document.body.style;
+if (document.body.currentStyle) { // IE, Opera
+computed = document.body.currentStyle;
+} else { // W3C
+computed = document.defaultView.getComputedStyle(document.body, '');
+}
+// inefficient way of modifying the same property
+// and retrieving style information right after
+bodystyle.color = 'red';
+tmp = computed.backgroundColor;
+bodystyle.color = 'white';
+tmp = computed.backgroundImage;
+bodystyle.color = 'green';
+tmp = computed.backgroundAttachment;
+
+/** better approach
+*/
+bodystyle.color = 'red';
+bodystyle.color = 'white';
+bodystyle.color = 'green';
+tmp = computed.backgroundColor;
+tmp = computed.backgroundImage;
+tmp = computed.backgroundAttachment;
+
+</pre>
+</dd>
+
+<dt>Minimize Repaints and Reflows</dt><dd><div><ul class="bullets-level1">
+<li>Style Changes</li>
+<li>Consider the following example, this causes the browser to reflow 3 times :</li></ul></div>
+<pre>var el = document.getElementById('mydiv');
+el.style.borderLeft = '1px';
+el.style.borderRight = '2px';
+el.style.padding = '5px';
+
+/** better way to do this causing browser reflow only once
+*/
+var el = document.getElementById('mydiv');
+el.style.cssText = 'border-left: 1px; border-right: 2px; padding: 5px;';
+//keeping existing styles
+el.style.cssText += '; border-left: 1px;';
+
+/**
+using className
+*/
+var el = document.getElementById('mydiv');
+el.className = 'active';
+</pre>
+</dd>
+	
+<dt>Minimize Repaints and Reflows</dt>	<dd><div><ul class="bullets-level1">
+<li>Batch DOM changes</li>
+<li> When there are many DOM changes use the following steps</li>
+1. Take the element off of the document flow<br/>
+2. Apply multiple changes<br/>
+3. Bring the element back to the document<br/></li>
+<li>Example : efficient ways to insert additional data to the below element</li>
+&lt;ul id="mylist"&gt;<br/>
+	&lt;li&gt;&lt;a href="http://phpied.com"&gt;Stoyan&lt;/a&gt;&lt;/li&gt;<br/>
+	&lt;li&gt;&lt;a href="http://julienlecomte.com"&gt;Julien&lt;/a&gt;&lt;/li&gt;</br>
+	&lt;/ul&gt;
+</ul></div><pre>
+/** most obvious implementation 
+*/
+function appendDataToElement(appendToElement, data) {
+var a, li;
+for (var i = 0, max = data.length; i < max; i++) {
+a = document.createElement('a');
+a.href = data[i].url;
+a.appendChild(document.createTextNode(data[i].name));
+li = document.createElement('li');
+li.appendChild(a);
+appendToElement.appendChild(li);
+}
+}; 
+
+var ul = document.getElementById('mylist');
+appendDataToElement(ul, data);
+
+/** Better Approach 1
+*/
+var ul = document.getElementById('mylist');
+ul.style.display = 'none';
+appendDataToElement(ul, data);
+ul.style.display = 'block';
+
+/** Approach 2 - use fragments
+*/
+var fragment = document.createDocumentFragment();
+appendDataToElement(fragment, data);
+document.getElementById('mylist').appendChild(fragment);
+
+/** Approach 3
+*/
+var old = document.getElementById('mylist');
+var clone = old.cloneNode(true);
+appendDataToElement(clone, data);
+old.parentNode.replaceChild(clone, old);
+</pre></dd>
+
+<dt>Caching Layout Information</dt><dd><div><ul class="bullets-level1">
+<li>Browsers minimizes reflows by use queuing & batch execution, however requests for layout info, cause the queue flushes to apply all changes which is not desirable<br/>hence use local values for such requests. Eg : moving element diagonally one pixel at a time </li>
+</ul></div>
+<pre>
+// inefficient
+myElement.style.left = 1 + myElement.offsetLeft + 'px';
+myElement.style.top = 1 + myElement.offsetTop + 'px';
+if (myElement.offsetLeft >= 500) {
+stopAnimation();
+}
+
+//modified
+current++
+myElement.style.left = current + 'px';
+myElement.style.top = current + 'px';
+if (current >= 500) {
+stopAnimation();
+}
+</pre>
+</ul></div></dd>
+
+<dt>Taking Elements Out of the Flow for Animations</dt><dd><div><ul class="bullets-level1">
+<li>In cases when there are animations which are expanded & the rest of the content of the page is pushed down, reflow affects larger part of render tree which in turn affects performance </li>
+<li>Avoid reflow of large part of the page by following the below steps :<br/>
+1.   Use absolute positioning for the element you want to animate on the page, taking
+it out of the layout flow of the page.<br/>
+2.   Animate the element when it expands a repaint occurs. Hence, repaint only small part of page instead of reflow and repaint of large chunks <br/>
+3.   When the animation is done, restore the positioning, thereby pushing down the rest of the document only once.</li>
+</ul></div></dd>
+
+<dt>IE and :hover</dt><dd><div><ul class="bullets-level1">
+<li>Since version 7, IE can apply the :hover CSS pseudo-selector on any element</li>
+<li>However too many hovers degrades the responsiveness</ul></div></dd>
+
+<dt>Event delegation</dt><dd><div><ul class="bullets-level1">
+<li>Use event delegation to minimize the number of event handlers.</li>
+<li> Each event has 3 phases : Capturing, At target, Bubbling. Bubbling is good for event delegation</li><li>example :  When the user clicks the "menu #1" link, the click event is first received by the &lt;a&gt; element. Then it bubbles up the DOM tree and is received by the &lt;li&gt; element, then
+the &lt;ul&gt;, then the &lt;div&gt;, and so on. This allows you to attach only one event handler to a parent element and receive notifications for all events that happen to the children</li></ul><img src="./resources/images/dom_tree.png"/></div></dd>
+
+<dt>Loops</dt><dd></dd>
+<dt>Types of Loops</dt><dd><div><ul class="bullets-level1">
+<li>Four types of loops : </li></ul>
+</div>
+<pre>
+/**for loop
+*/
+for (var i=0; i < 10; i++){
+//loop body
+}
+
+/**while loop
+*/
+var i = 0;
+while(i < 10){
+//loop body
+i++;
+}
+
+/**do-while loop
+*/
+var i = 0;
+do {
+//loop body
+} while (i++ < 10);
+
+/**
+for-in loop
+*/
+for (var prop in object){
+//loop body
+}
+</pre></dd>
+
+<dt>Decreasing the work per iteration</dt><dd><div><ul class="bullets-level1">
+<li>Limiting the number of expensive
+operations done in the loop body is a good way to speed up the entire loop</li>
+<li>Eg: Array processing can be done using any of the following 3 loops</ul>
+</div>
+<pre>
+//original loops
+for (var i=0; i < items.length; i++){
+process(items[i]);
+}
+var j=0;
+while (j < items.length){
+process(items[j++]]);
+}
+var k=0;
+do {
+process(items[k++]);
+} while (k < items.length);
+
+//minimizing property lookups
+for (var i=0, len=items.length; i < len; i++){
+process(items[i]);
+}
+var j=0,
+count = items.length;
+while (j < count){
+process(items[j++]]);
+}
+var k=0,
+num = items.length;
+do {
+process(items[k++]);
+} while (k < num);
+
+//minimizing property lookups and reversing (better performance)
+for (var i=items.length; i--; ){
+process(items[i]);
+}
+var j = items.length;
+while (j--){
+process(items[j]]);
+}
+var k = items.length-1;
+do {
+process(items[k]);
+} while (k--);
+</pre></dd>
+
+<dt>Decreasing the number of iterations</dt><dd><div><ul class="bullets-level1">
+<li>well known approach to limiting loop iterations is a pattern called Duff's
+Device</li>
+<li>Duff's Device is a technique of unrolling loop bodies so that each iteration actually does
+the job of many iterations</li>
+<li>Example : each trip through the loop is allowed a maximum of eight calls to process()</li></ul></div>
+<pre>
+
+//The number of iterations through the loop is determined by dividing the total number of items by eight
+
+var iterations = Math.floor(items.length / 8),
+startAt = items.length % 8,
+i = 0;
+do {
+switch(startAt){
+case 0: process(items[i++]);
+case 7: process(items[i++]);
+case 6: process(items[i++]);
+case 5: process(items[i++]);
+case 4: process(items[i++]);
+case 3: process(items[i++]);
+case 2: process(items[i++]);
+case 1: process(items[i++]);
+}
+startAt = 0;
+} while (--iterations);
+</pre></dd>
+
+<dt>Function-Based Iteration</dt><dd><div><ul class="bullets-level1">
+<li>forEach() method : iterates over the members of an array and runs a function
+on each. Example</li></ul></div>
+<pre>
+items.forEach(function(value, index, array){
+process(value);
+});
+</pre></dd>
+
+<dt>Conditionals</dt><dd></dd>
+<dt>if-else Vs switch</dt><dd><div><ul class="bullets-level1">
+<li>the switch statement is faster in most cases when compared to ifelse,
+but significantly faster only when the number of conditions is large</li>
+</ul></div><pre>
+/** if statement more readable than switch */
+if (found){
+//do something
+} else {
+//do something else
+}
+switch(found){
+case true:
+//do something
+break;
+default:
+//do something else
+}
+</pre></dd>
+
+<dt>Optimizing if-else</dt><dd><div><ul class="bullets-level1">
+<li>goal is always to minimize the number of conditions to evaluate before taking the correct path</li>
+<li>Eg: the code is optimal only for condition <5, for >5 more conditions need to be checked </li>
+</ul></div>
+<pre>
+if (value < 5) {
+//do something
+} else if (value > 5 && value < 10) {
+//do something
+} else {
+//do something
+}
+
+/**
+ nested ifs could be used but it affects performance & code is still not optimal
+ */
+if (value == 0){
+return result0;
+} else if (value == 1){
+return result1;
+} else if (value == 2){
+return result2;
+} else if (value == 3){
+return result3;
+} else if (value == 4){
+return result4;
+} else if (value == 5){
+return result5;
+} else if (value == 6){
+return result6;
+} else if (value == 7){
+return result7;
+} else if (value == 8){
+return result8;
+} else if (value == 9){
+return result9;
+} else {
+return result10;
+}
+
+/**
+hence to minimize number of conditions the optimal code is :
+*/
+if (value < 6){
+if (value < 3){
+if (value == 0){
+return result0;
+} else if (value == 1){
+return result1;
+} else {
+return result2;
+}
+} else {
+if (value == 3){
+return result3;
+} else if (value == 4){
+return result4;
+} else {
+return result5;
+}
+}
+} else {
+if (value < 8){
+if (value == 6){
+return result6;
+} else {
+return result7;
+}
+} else {
+if (value == 8){
+return result8;
+} else if (value == 9){
+return result9;
+} else {
+return result10;
+}
+}
+}
+</pre></dd>
+
+<dt>Lookup Tables</dt><dd><div><ul class="bullets-level1">
+<li>Lookup tables are very fast in comparison to if-else and switch, & also
+help to make code more readable when there are a large number of discrete values for which to test</li></ul></div>
+<pre>
+/** define the array of results ( as a lookup table)
+*/
+
+var results = [result0, result1, result2, result3, result4, result5, result6,
+result7, result8, result9, result10]
+//return the correct result
+return results[value];
+
+/** instead of a switch */
+switch(value){
+case 0:
+return result0;
+case 1:
+return result1;
+case 2:
+return result2;
+case 3:
+return result3;
+case 4:
+return result4;
+case 5:
+return result5;
+case 6:
+return result6;
+case 7:
+return result7;
+case 8:
+return result8;
+case 9:
+return result9;
+default:
+return result10;
+}
+</pre></dd>
+<dt>Recursions</dt><dd></dd>
+<dt>Call Stack Limits</dt><dd><div><ul class="bullets-level1">
+<li>Complex algorithms are typically made easier by using recursion however an ill-defined or missing terminal condition can lead to long execution times</li>
+<li>more likely to run into browser call stack size limits</li>
+<li>Except IE(where call stack is related to memory) all other browsers have static call stack limits</li>
+<li>Call stack size is higher for most modern browser & an error is displayed when the size is exceeded</li>
+<li>Use try-catch to trap them</li></ul>
+</div>
+<pre>try {
+recurse();
+} catch (ex){
+alert("Too much recursion!");
+}
+
+
+/**
+Recursion example : factorial
+*/
+function factorial(n){
+if (n == 0){
+return 1;
+} else {
+return n * factorial(n-1);
+}
+}
+</pre></dd>
+
+<dt>Recursion Patterns</dt><dd><div><ul class="bullets-level1">
+<li>2 recursion patterns to be aware of during call stack size limit:</li></ul></div>
+<pre>function recurse(){
+recurse();
+}
+
+/** more troublesome pattern */
+function first(){
+second();
+}
+function second(){
+first();
+}
+first();</pre>
+</dd>
+
+<dt>Iteration</dt><dd><div><ul class="bullets-level1">
+<li>Iterations could be used instead of recursion eventhough it might be slower eg : mergesort implementation</li>
+<li>If you run into a stack overflow error, change the method to an iterative algorithm</li></ul></div></dd>
+
+<dt>Memoization</dt><dd><div><ul class="bullets-level1">
+<li>Work avoidance is the best performance optimization technique</li>
+<li>Memoization is an approach to avoid work repetition by caching previous calculations
+for later reuse</li>
+<li> Hence memoization is used for recursive algorithms</li>
+<li> Example : factorial code can be rewritten as below : </li></ul></div>
+<pre>
+/** factorial 
+*/
+function factorial(n){
+if (n == 0){
+return 1;
+} else {
+return n * factorial(n-1);
+}
+}
+
+/** modified factorial
+*/
+function memfactorial(n){
+if (!memfactorial.cache){
+memfactorial.cache = {
+"0": 1,
+"1": 1
+};
+}
+if (!memfactorial.cache.hasOwnProperty(n)){
+memfactorial.cache[n] = n * memfactorial (n-1);
+}
+return memfactorial.cache[n];
+}</pre></dd>
+
+<dt>String Concatenation</dt><dd></dd>
+<dt>Plus (+) and Plus-Equals (+=) Operators</dt><dd><div><ul class="bullets-level1"><li>str += "one" + "two";</li>Steps <br/>
+1. A temporary string is created in memory.<br/>
+2. The concatenated value "onetwo" is assigned to the temporary string.<br/>
+3. The temporary string is concatenated with the current value of str.<br/>
+4. The result is assigned to str.<br/>
+<li>str += "one";<br/>
+str += "two";<br/>
+Above code avoids steps 1&2
+</li>
+<li>str = str + "one" + "two"; // one more alternative to the above</li></ul>
+<img src="./resources/images/string_concat.png"/></div></dd>
+
+<dt>Array Joining</dt><dd><div><ul class="bullets-level1">
+<li>Array.prototype.join method merges all elements of an array into a string and
+accepts a separator string to insert between each element. </li>
+<li>By passing empty string as separator, simple concat of all elements of an array can be done</li>
+<li>Array joining is slower than other methods of concatenation</li>
+<li>However in IE 7 and earlier it is the most efficient way to concat strings</li></ul></div></dd>
+
+<dt>String.prototype.concat</dt><dd><div><ul class="bullets-level1">
+<li>concat is a little slower than simple + and += operators</li></ul></div>
+<pre>
+// append one string
+str = str.concat(s1);
+// append three strings
+str = str.concat(s1, s2, s3);
+// append every string in an array by using the array
+// as the list of arguments
+str = String.prototype.concat.apply(str, array);
+</pre></dd>
+
+<dt>Regular Expression Optimization</dt><dd></dd>
+<dt>How Regular Expression works</dt><dd><div><ul class="bullets-level1">
+<li>Step 1: Compilation</li>
+<li>Step 2: Setting the starting position</li>
+<li>Step 3: Matching each regex token <br/>
+Backtracking <br/>When a particular token fails to match, the regex tries to backtrack to a prior point
+in the match attempt and follow other possible paths through the regex.</li>
+<li>Step 4: Success or failure</li>
+</ul></div></dd>
+
+<dt>Alternation and Backtracking</dt><dd><div><ul class="bullets-level1">Example :
+</ul>
+<img src="./resources/images/backtrack_alternation.png"/></div>
+<pre>/h(ello|appy) hippo/.test("hello there, happy hippo");</pre></dd>
+
+<dt>Repetition and Backtracking</dt><dd><div><ul class="bullets-level1">
+<li>Backtracking works with repetition quantifiers</li></ul>
+</div><pre>var str = "&lt;p&gt;Para 1.&lt;/p&gt;" +
+"&lt;img src='smiley.jpg'&gt;" +
+"&lt;p&gt;Para 2.&lt;/p&gt;" +
+"&lt;div&gt;Div.&lt;/div&gt;";
+/<p>.*<\/p>/i.test(str);</pre></dd>
+
+<dt>Runaway Backtracking</dt><dd><div><ul class="bullets-level1">
+<li>Runaway backtracking can cause a regex that usually finds matches quickly to run
+slowly or even crash your browser when applied to partially matching strings.</li>
+<li>Example : regex that matches an entire &lt;html&gt;
+<li>Techniques for avoiding this problem include <br/>
+making adjacent tokens mutually exclusive, <br/>
+avoiding nested quantifiers that allow matching the same part of a string more than one way, and<br/> eliminating needless backtracking by repurposing the atomic nature of lookahead.</li></ul></div></dd>
+
+<dt>String Trimming</dt><dd><div><ul class="bullets-level1"><li>Trimming strings is not a common performance bottleneck but is useful to study regex optimization</li></ul></div></dd>
+
+<dt>Trimming with Regular Expressions</dt><dd><div><ul class="bullets-level1">
+<li>uses 2 simple substitutions - Remove leading and trailing whitespace using trim() method</li></ul></div>
+<pre>if (!String.prototype.trim) {
+String.prototype.trim = function() {
+return this.replace(/^\s+/, "").replace(/\s+$/, "");
+}
+}
+// test the new method...
+// tab (\t) and line feed (\n) characters are
+// included in the leading whitespace.
+var str = " \t\n test string ".trim();
+log(str == "test string"); // alerts "true"</pre></dd>
+
+<dt>Trimming without Regular Expressions</dt><dd><div><ul class="bullets-level1"><li>trimming with regular expressions is faster than this. Example</li></ul></div>
+<pre>String.prototype.trim = function() {
+var start = 0,
+end = this.length - 1,
+ws = " \n\r\t\f\x0b\xa0\u1680\u180e\u2000\u2001\u2002\u2003
+\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u200b\u2028\u2029\u202f
+\u205f\u3000\ufeff";
+while (ws.indexOf(this.charAt(start)) > -1) {
+start++;
+}
+while (end > start && ws.indexOf(this.charAt(end)) > -1) {
+end--;
+}
+return this.slice(start, end + 1);
+}</pre>
+</dd>
+
+<dt>Hybrid Trimming</dt><dd><div><ul class="bullets-level1">
+<li>combining the previous 2 methods to provide a hybrid solution</li></ul></div>
+<pre>
+String.prototype.trim = function() {
+var str = this.replace(/^\s+/, ""),
+end = str.length - 1,
+ws = /\s/;
+while (ws.test(str.charAt(end))) {
+end--;
+}
+return str.slice(0, end + 1);
+}
+</pre></dd>
+
+<dt>Responsive Interfaces</dt><dd></dd>
+<dt>Browser UI Thread</dt><dd><div><ul class="bullets-level1"><li>the process shared by JavaScript and user interface updates is referred to as Browser UI Thread </li>
+<li>UI thread tasks get added as the user interacts with a page</li>
+<li>2 Browser limits : call stack size limit & long running script time</li>
+<li>No JavaScript task should take longer than 100 milliseconds to execute. Longer
+execution times cause a noticeable delay in updates to the UI and negatively impact
+the overall user experience.</li></ul>
+<img src="./resources/images/uithread.png"</div></dd>
+
+<dt>Yielding with Timers</dt><dd><div><ul class="bullets-level1"><li>Timers can be used to schedule code for later execution, which allows you to split
+up long-running scripts into a series of smaller tasks. Example</li></ul></div>
+<pre>function saveDocument(id){
+//save the document
+openDocument(id)
+writeText(id);
+closeDocument(id);
+//update the UI to indicate success
+updateUI(id);
+}
+
+/** Split the above if it is taking too long to execute
+*/
+function saveDocument(id){
+var tasks = [openDocument, writeText, closeDocument, updateUI];
+setTimeout(function(){
+//execute the next task
+var task = tasks.shift();
+task(id);
+//determine if there's more
+if (tasks.length > 0){
+setTimeout(arguments.callee, 25);
+}
+}, 25);
+}
+</pre>
+</dd>
+
+<dt>Web Workers</dt><dd><div><ul class="bullets-level1"><li>Web workers are a feature in newer browsers that allow you to execute JavaScript code outside of the UI thread, thus preventing UI locking</li>
+<li>Web workers are suitable for any long-running scripts that work on pure data and that
+have no ties to the browser UI.</li>
+<li> To create a web worker, pass url for the js file : <br/>var worker = new Worker("code.js");<br/>this creates a new thread with a new worker enviroment for the specified file</li></ul></div></dd>
+
+<dt>AJAX</dt><dd></dd>
+<!--<dt>Data Transmission</dt><dd><div><ul class="bullets-level1"><li></li></ul></div></dd>
+<dt>Data Formats</dt><dd><div><ul class="bullets-level1"><li></li></ul></div></dd>
+-->
+<dt>Ajax Performance Guidelines</dt><dd><div><ul class="bullets-level1">
+<li>Reduce the number of requests you make, either by concatenating JavaScript and
+CSS files, or by using MXHR.</li>
+<li>Improve the perceived loading time of your page by using Ajax to fetch less important
+files after the rest of the page has loaded.</li>
+<li>Ensure your code fails gracefully and can handle problems on the server side.</li>
+<li>Know when to use a robust Ajax library and when to write your own low-level Ajax
+code.</li>
+</ul></div></dd>
+
+<dt>Programming Practices</dt><dd></dd>
+<dt>Some programming practices to follow :</dt><dd><div><ul class="bullets-level1"><li>
+Avoid the double evaluation penalty by avoiding the use of eval() and the
+Function() constructor. Also, pass functions into setTimeout() and setIn
+terval() instead of strings.</li>
+<li>Use object and array literals when creating new objects and arrays. They are created
+and initialized faster than nonliteral forms.</li>
+<li>Avoid doing the same work repeatedly. Use lazy loading or conditional advance
+loading when browser-detection logic is necessary.</li>
+<li>When performing mathematical operations, consider using bitwise operators that
+work directly on the underlying representation of the number.</li>
+<li>Native methods are always faster than anything you can write in JavaScript. Use
+native methods whenever available.</li></ul></div></dd>
+<!--
+<dt>Use Object/Array Literals</dt><dd><div><ul class="bullets-level1"><li></li></ul></div></dd>
+<dt>Lazy Loading</dt><dd><div><ul class="bullets-level1"><li></li></ul></div></dd>
+<dt>Conditional Advance Loading</dt><dd><div><ul class="bullets-level1"><li></li></ul></div></dd>
+<dt>Use Bitwise Operators and Native Methods</dt><dd><div><ul class="bullets-level1"><li></li></ul></div></dd>
+-->
+<dt>Building and Deploying Efficiently</dt><dd></dd>
+<dt>Build & Deploy steps</dt><dd><div><ul class="bullets-level1">
+The build and deployment process can have a tremendous impact on the performance
+of a JavaScript-based application. The most important steps in this process are:<br/>
+<br/><li>Combining JavaScript files to reduce the number of HTTP requests</li><br/>
+<li>Minifying JavaScript files using the YUI Compressor</li><br/>
+<li>Serving JavaScript files compressed (gzip encoding)</li><br/>
+<li>Making JavaScript files cacheable by setting the appropriate HTTP response headers
+and work around caching issues by appending a timestamp to filenames</li><br/>
+<li>Using a Content Delivery Network to serve JavaScript files; not only will a CDN
+improve performance, it should also manage compression and caching for you</li><br/>
+<li>Use a tool like Apache Ant or any custom tool for the above</li><br/>
+</ul></div></dd>
+<!--
+<dt>CombiningJavascript Files</dt><dd><div><ul class="bullets-level1"><li></li></ul></div></dd>
+<dt>Javascript Minification</dt><dd><div><ul class="bullets-level1"><li></li></ul></div></dd>
+<dt>Building vs Runtime Build Processes</dt><dd><div><ul class="bullets-level1"><li></li></ul></div></dd>
+<dt>Javascript Compression</dt><dd><div><ul class="bullets-level1"><li></li></ul></div></dd>
+<dt>Caching Javascript Files</dt><dd><div><ul class="bullets-level1"><li></li></ul></div></dd>
+<dt>Working around Caching Issues</dt><dd><div><ul class="bullets-level1"><li></li></ul></div></dd>
+<dt>Using a Content Delivery Network</dt><dd><div><ul class="bullets-level1"><li></li></ul></div></dd>
+<dt>Deploying Javascript Resources</dt><dd><div><ul class="bullets-level1"><li></li></ul></div></dd>
+<dt>Agile Javascript Build Process</dt><dd><div><ul class="bullets-level1"><li></li></ul></div></dd>
+-->
+
+<dt>Tools</dt><dd></dd>
+<dt>Profiling & Networking</dt><dd><div><ul class="bullets-level1">
+<li>Use a network analyzer to identify bottlenecks in the loading of scripts and other
+page assets; this helps determine where script deferral or profiling may be needed.</li><br/>
+<li>Although conventional wisdom says to minimize the number of HTTP requests,
+deferring scripts whenever possible allows the page to render more quickly,
+providing users with a better overall experience.</li><br/>
+<li>Use a profiler to identify slow areas in script execution, examining the time spent
+in each function, the number of times a function is called, and the callstack itself
+provides a number of clues as to where optimization efforts should be focused.</li><br/>
+<li>Although time spent and number of calls are usually the most valuable bits of data,
+looking more closely at how functions are being called might yield other optimization
+candidates.</li></ul></div></dd>
+
+<!--
+<dt>YUI Profiler</dt><dd><div><ul class="bullets-level1"><li></li></ul></div></dd>
+<dt>Anonymous Functions</dt><dd><div><ul class="bullets-level1"><li></li></ul></div></dd>
+<dt>Firebug</dt><dd><div><ul class="bullets-level1"><li></li></ul></div></dd>
+<dt>Script Blocking</dt><dd><div><ul class="bullets-level1"><li></li></ul></div></dd>
+<dt>Page Speed</dt><dd><div><ul class="bullets-level1"><li></li></ul></div></dd>
+<dt>Fiddler</dt><dd><div><ul class="bullets-level1"><li></li></ul></div></dd>
+<dt>YSlow</dt><dd><div><ul class="bullets-level1"><li></li></ul></div></dd>
+<dt>dynaTrace AJAX Edition</dt><dd><div><ul class="bullets-level1"><li></li></ul></div></dd>
+-->
+
+</dl>
+</body></html>
