@@ -1,0 +1,109 @@
+Day 1
+-------------------------------
+1. Grammar and Types - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Grammar_and_Types
+
+2. Control Flow and Error handling - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Control_flow_and_error_handling
+
+3. Loops and iterations - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Loops_and_iteration
+
+4. Working with Objects - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Working_with_Objects
+
+5. Object API - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object
+
+6. Object Oriented Javascript - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Introduction_to_Object-Oriented_JavaScript
+
+7. Object.prototype - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/prototype
+
+8. Inheritance via Prototype - https://developer.mozilla.org/en/docs/Web/JavaScript/Inheritance_and_the_prototype_chain
+
+9. Functions https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions
+
+10. Function API - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function
+
+11. Array API - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array
+
+12. Promise - https://github.com/mdn/promises-test/blob/gh-pages/index.html
+
+Day 2
+----------------------------------------
+13. AJAX API - https://developer.mozilla.org/en-US/docs/AJAX/Getting_Started
+
+14. Node, Element, HTMLElement, HTMLTableElement, HTMLTableRowElement - https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableRowElement/insertCell
+
+15. Javascript design patterns - http://addyosmani.com/resources/essentialjsdesignpatterns/book/
+
+16. Webstorage - https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API/Using_the_Web_Storage_API
+
+17. CORS (Cross Origin Resource Sharing) - https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS
+
+18. JSON Test (to test JSONP) - http://www.jsontest.com/ also http://jsfiddle.net/echo/jsonp/?name=arun&callback=myjsonphandler
+
+Day 3
+-------------------------------------------------
+
+19. Nodejs modules - https://nodejs.org/api/modules.html, http://wiki.commonjs.org/wiki/CommonJS
+
+git client - https://github.com/git-for-windows/git/releases/tag/v2.6.3.windows.1
+
+	Global variables, functions - https://nodejs.org/api/globals.html
+	Error - https://nodejs.org/api/errors.html
+	Timer - https://nodejs.org/api/timers.html
+	Path - https://nodejs.org/api/path.html
+	HTTP - https://nodejs.org/api/http.html
+
+20. NodeJS tutorials / articles - https://docs.nodejitsu.com/articles/file-system/how-to-read-files-in-nodejs
+
+21. Reading / writing JSON from file in nodejs - https://www.npmjs.com/package/jsonfile
+
+22. NPM package repository - https://www.npmjs.com/
+
+23. Express JS - http://expressjs.com, http://expressjs.com/en/guide/routing.html
+
+Day 4
+-----------------------------------------------
+24. Download Mongo db - https://www.mongodb.org
+25. Create folders "data/db" in your drive root
+26. Execute MONGO_HOME/bin/mongod
+27. Execute bin/mongo - MongoDB shell - https://docs.mongodb.org/manual/reference/mongo-shell/
+https://docs.mongodb.org/manual/core/read-operations-introduction/
+
+28. Configure mongoose - https://www.npmjs.com/package/mongoose
+29. Understand mongoose API - http://mongoosejs.com/docs/queries.html
+https://cdnjs.com/libraries/backbone.js/tutorials/nodejs-restify-mongodb-mongoose
+
+30. Nodejs Cluster - https://nodejs.org/api/cluster.html
+31. Express JS Session - https://github.com/expressjs/session
+32. NodeJs Express JS session store in Redis - http://blog.arisetyo.com/?p=492
+
+AngularJS - Intro
+33. AngularJS Wikipedia - https://en.wikipedia.org/wiki/AngularJS
+	Angular 1.x - https://angularjs.org/
+	Angular 2.x - https://angular.io/
+	Angular 1.x to 2.x - https://docs.google.com/document/d/1xvBZoFuNq9hsgRhPPZOJC-Z48AHEbIBPlOCBTSD8m0Y/edit
+	Angular 1.x to 2.x - http://news.softpedia.com/news/google-releases-guide-on-how-to-migrate-from-angularjs-1-x-to-2-x-490106.shtml
+
+34. Angular 2.x guide - https://angular.io/docs/js/latest/guide/setup.html
+	Angular 1.x guide - https://docs.angularjs.org/guide
+	HTTP module - https://docs.angularjs.org/api/ng/service/$http
+
+35. AngularJS Batarang Chrome plugin - https://chrome.google.com/webstore/detail/angularjs-batarang/ighdmehidhipcmcojjgiloacoafjmpfk
+	AngularJS 1.x debugging using Batarang - https://www.youtube.com/watch?v=q-7mhcHXSfM
+
+36. Javascript Performance
+Google Best practices - https://developers.google.com/speed/articles/optimizing-javascript?hl=en
+Closure memory leak in detail- http://www.javascriptkit.com/javatutors/closuresleak/index.shtml
+Speed up Javascript Execution with V8 Profiler - https://developers.google.com/web/tools/chrome-devtools/profile/rendering-tools/js-execution
+MDN One stop for all performance - https://developer.mozilla.org/en-US/docs/Mozilla/Performance
+Addy Osmani's wonderful article on efficient Javascript - http://www.smashingmagazine.com/2012/11/writing-fast-memory-efficient-javascript/ 
+
+
+37. MEAN JS - http://meanjs.org/ - Click on Download button, this will download the sample application that has full implementation of MEAN stack
+
+
+todo
+Angular 2
+Bootstrap style
+performance
+
+
+
