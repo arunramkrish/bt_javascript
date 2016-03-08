@@ -1,0 +1,23 @@
+<html>
+<head>
+<script>
+	"use strict"
+	alert("Hi, I am in header still");
+	var globalMsg = "I am global";
+</script>
+</head>
+<body>
+	<h1>Hi! Javascript</h1>
+	<div id="msgDiv"></div>
+	<h2>before second div</h2>
+	<div id="msgDiv"></div>
+	<div id="msgDiv"></div>
+	<script>document.write("Hello JS from <br/> inline javascript");</script>
+	<script>console.log("Hello JS in \n console");</script>
+	<script type="text/javascript" src="include/1_scripts.js"></script>
+	<script>console.log(window.globalMsg + getMessage());</script>
+	<script>
+	var container = document.getElementById("msgDiv");
+	container.innerText = "<span><b>" + window.getMessage() + " using dom API " + "</b></span>";</script>
+</body>
+</html>

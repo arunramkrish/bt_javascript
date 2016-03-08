@@ -1,0 +1,78 @@
+<html>
+<head>Javascript Objects</head>
+    <body><h1>Javascript Objects</h1></body>
+    <script>
+        function contactToString() {
+                var tostr = "";
+                for (prop in this) {
+                    console.log("Type of prop " + prop + " is " + typeof(this[prop]));
+                    if (typeof(this[prop]) == "object") {
+                        tostr += "[" + prop + "]" + contactToString.call(this[prop]);
+                    } else {
+                        tostr += "[" + prop + "]=" + this[prop] +"\n";
+                    }
+                }
+                return tostr;
+        }
+        // From base class
+        var obj = new Object();
+        obj["name"] = "BT";
+        obj.phone = 12345;
+        obj.address = new Object();
+        obj.address.line1 = "Domlur";
+        obj.address.city = "Bangalore";
+        obj.toString = contactToString;
+        
+        console.log(obj.toString());
+        
+        //from constr
+        function Contact(name, phone, l, c) {
+            this.name = name;
+            this.phone = phone;
+            this.address = new Address(l,c);
+            
+            this.getAddress = function() {
+                return this.address;
+            }
+            this.toString = function() {
+                return "from constructor " + this.name;
+            }
+        }
+        
+        function Address(line1, city) {
+            this.line1 = line1;
+            this.city = city;
+        }
+        /*
+        var contactFromConstr = new Object();
+        Contact.call(contactFromConstr, "ANZ", 23456, "Marathalli", "Bangalore");
+        Contact.apply(contactFromConstr, ["ANZ", 23456, "Marathalli", "Bangalore"]);
+        */
+        var contactFromConstr = new Object();
+        Object.getPrototypeOf(contactFromConstr).inheritedThroProto = function() {
+            return "I am proto";
+        } 
+        Contact.call(contactFromConstr, "ANZ", 23456, "Marathalli", "Bangalore");
+        Contact.apply(contactFromConstr, ["ANZ", 23456, "Marathalli", "Bangalore"]);
+        contactFromConstr.prototype = new Object();
+        contactFromConstr.prototype.constructor = Contact;
+        contactFromConstr.prototype.msgFromContact = function() {
+            console.log("Adding to prototype");
+        }
+        
+        var contactFromConstr1 = new Contact("ANZ", 23456, "Marathalli", "Bangalore");
+        var contactFromConstr2 = new Contact("BT", 123, "Koramangala", "Bangalore");
+        Contact.prototype.toString = contactToString;
+        
+        console.log("Object from Constr1: " + contactToString.call(contactFromConstr1));
+        console.log("Object from Constr2: " + contactToString.call(contactFromConstr2));
+        
+        console.log("Object from Constr1 using member function: " + contactFromConstr1.toString());
+        console.log("Object from Constr2: " + contactFromConstr2.toString());
+        
+        
+        //Object from prototyor
+//        var contactFromPrototype = Object.create({}, [{"name": }]);
+        //contactFromPrototype.defin
+    </script>
+</html>

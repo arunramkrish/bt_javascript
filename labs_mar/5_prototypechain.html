@@ -1,0 +1,52 @@
+<html><head>Javascript prototype chain</head><body><script>
+    // Shape - superclass
+    "use strict"
+function Shape() {
+  this.x = 0;
+  this.y = 0;
+}
+
+// superclass method
+Shape.prototype.move = function(x, y) {
+  this.x += x;
+  this.y += y;
+  console.info('Shape moved.');
+};
+
+// Rectangle - subclass
+function Rectangle() {
+  Shape.call(this); // call super constructor.
+}
+
+// subclass extends superclass - comment following two lines to see how it impacts prototype chain
+Rectangle.prototype = Object.create(Shape.prototype);
+Rectangle.prototype.constructor = Rectangle;
+
+var rect1 = new Rectangle();
+    rect1.x = 5;
+    rect1.y = 10;
+var rect2 = new Rectangle();
+var shape1 = new Shape();
+    
+console.log('Is rect an instance of Rectangle?', rect1 instanceof Rectangle);// true
+console.log('Is rect an instance of Shape?', rect1 instanceof Shape);// true
+rect1.move(1, 1); // Outputs, 'Shape moved.'
+
+    Rectangle.prototype.area = function() {
+        return this.x * this.y;
+    }
+    console.log(rect1.area());
+    Shape.prototype.category = "POLYGON";
+    
+    Rectangle.prototype.category = "QUADRILATERAL";
+    
+    console.log(rect1.category);
+    
+    var rect3 = Object.create(Rectangle.prototype, {"x": {writable: true, value: 2, configurable: false}});
+    //Object.defineProperty(rect3, "x", {writable: true, value: 2, configurable: false});
+    rect3.y = 6;
+    
+    //rect3.prototype.constructor = Rectangle;
+    console.log(rect3.area());
+    delete rect3.x;
+</script></body></html>

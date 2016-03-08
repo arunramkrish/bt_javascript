@@ -1,0 +1,89 @@
+<html>
+    <head>
+        <script type="text/javascript">
+            function contactToString() {
+                var tostr = "";
+                for (prop in this) {
+                    tostr += "[" + prop + "]=" + this[prop] +"\n";
+                }
+                return tostr;
+            }
+            
+            var c1 = {
+                "name" : "BT",
+                "phone" : "5467890",
+                "address" : {
+                    "line1" : "Koramangala",
+                    "city" : "Bangalore"
+                },
+                "toString" : contactToString
+            };
+            var c2 = {
+                "name" : "Honeywell",
+                "phone" : "433566",
+                "address" : {
+                    "line1" : "OuterRingRoad",
+                    "city" : "Bangalore"
+                },
+                "toString" : contactToString
+            };
+            var c3 = {
+                "name" : "ANZ",
+                "phone" : "788897890",
+                "address" : {
+                    "line1" : "Domlur",
+                    "city" : "Bangalore"
+                },
+                "toString" : contactToString
+            };
+            try {
+            var contacts = [];
+            contacts.push(c1);
+            contacts.push(c2);
+            contacts.push(c3);
+                throw c3;
+            } catch(e) {
+                console.log("Caught exception " + e);
+            }
+            
+            for(var index in contacts) {
+                contacts[index].name= contacts[index].name.toLowerCase();
+                console.log("Contact " + index + ":" + contacts[index].toString());
+            }
+            
+            function compareContactsByName(contact1, contact2) {
+                return contact1.name.localeCompare(contact2.name);
+            }
+            var fn = compareContactsByName;
+            console.log("comparator called directly " + fn.call(this, c1, c2));
+            
+            contacts.sort(fn);
+            for(var index in contacts) {
+                console.log("Sorted Contact " + index + ":" + contacts[index].name);
+            }
+            /*
+            function flattenContact(contact) {
+                return {
+                    name: contact.name,
+                    phone: contact.phone,
+                    addrline1 : contact.address.line1,
+                    addcity : contact.address.city
+                }
+            }*/
+            var flattenedContacts = contacts.map(function flattenContact(contact) {
+                return {
+                    name: contact.name,
+                    phone: contact.phone,
+                    addrline1 : contact.address.line1,
+                    addcity : contact.address.city
+                }
+            });
+            flattenedContacts.forEach(function(fc, index) {
+                console.log("Contact Addr" + index + ":" + fc.name + "=" + fc.addrline1 + "," + fc.addcity);
+            });
+        </script>
+    </head>
+    <body>
+        <h1>Javascript Arrays</h1>
+    </body>
+</html>
