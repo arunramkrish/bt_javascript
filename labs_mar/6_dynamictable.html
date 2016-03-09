@@ -1,24 +1,27 @@
 <!doctype html>
 <html>
-<head>Dynamic Table</head><body>
+<head>Dynamic Table
+    <link rel="stylesheet" type="text/css" href="include/6_datatable.css"/>
+    </head><body>
     <h1>Dynamic Table</h1>
     <div id="tableDiv"></div>
+    <script type="text/javascript" src="include/6_datatable.js"></script>
     <script>
         var contacts = [{
                 "name" : "BT",
                 "phone" : "5467890",
-                    "line1" : "Koramangala",
-                    "city" : "Bangalore"
+                "line1" : "Koramangala",
+                "city" : "Bangalore"
             },{
                 "name" : "Honeywell",
                 "phone" : "433566",
-                    "line1" : "OuterRingRoad",
-                    "city" : "Bangalore"
+                "line1" : "OuterRingRoad",
+                "city" : "Bangalore"
             },{
                 "name" : "ANZ",
                 "phone" : "788897890",
-                    "line1" : "Domlur",
-                    "city" : "Bangalore"
+                "line1" : "Domlur",
+                "city" : "Bangalore"
             }];
     
     new Datatable("tableDiv", contacts);

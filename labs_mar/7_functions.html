@@ -1,0 +1,26 @@
+<!doctype html>
+<html><head>Javascript Functions
+</head>
+<body>
+    <h1>Javascript Functions</h1>
+    <div id="messages">
+    </div>
+    </body>
+    <script type="text/javascript" src="include/7_logger.js"></script>
+    <script>
+        window.log("messages", "My First Message");
+        window.logVar("messages", "My Second Message");
+        window.logAnonymous("messages", "My Message");
+        window.logTempInnerFunction("messages", "My Message TempInner");
+        window.logTempInnerFunction("messages", "My Message TempInner");
+        window.logTempInnerFunction("messages", "My Message TempInner");
+        window.logTempInnerFunction("messages", "My Message TempInner");
+        
+        Logger.container = "messages";
+        Logger.logLevel = "DEBUG";
+        Logger.debug("My Debug Log");
+        Logger.logLevel = "INFO";
+        Logger.debug("My Debug Log - Not seen");
+        
+    </script>
+</html>
