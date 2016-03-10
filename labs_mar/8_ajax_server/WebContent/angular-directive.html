@@ -1,0 +1,61 @@
+<!doctype html>
+<html>
+<head>
+AngularJS Conctacts Table
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.js"></script>
+</head>
+<body ng-app="contactsApp" ng-init="contactsCount=0;">
+    <div ng-controller="ContactController as contactCtrl">
+	<h1>AngularJS Contact Table</h1>
+	<div id="formDiv">
+		<form id="contactForm" action="#">
+			<p>
+				<input type="text" id="name" title="Name"  ng-model="contact.name"/>
+			</p>
+			<p>
+				<input type="text" id="phone" title="Phone" ng-model="contact.phone"/>
+			</p>
+			<p>
+				<input type="text" id="line1" title="Address - Line1" ng-model="contact.line1"/>
+			</p>
+			<p>
+				<input type="text" id="city" title="Address - City" ng-model="contact.city"/>
+			</p>
+			<p>
+				<input type="submit" value="Add" ng-click="addContact()"/>
+				<input type="button" value="Validate"/>
+			</p>
+		</form>
+	</div>
+	<div id="tableDiv">
+        <table>
+            <tr><th>Name</th><th>Phone</th><th>Line1</th><th>City</th></tr>
+            <tr ng-repeat="c in contacts" my-contact>
+            </tr>
+        </table>
+        </div>
+    </div>
+</body>
+    <script>
+        var appModule = angular.module("contactsApp", []);
+        var ContactController = function($scope) {
+           $scope.contact = {};
+            $scope.contacts = [];
+            
+            $scope.addContact = function() {
+                $scope.contacts.push($scope.contact);
+                $scope.contact = {};
+            }
+        };
+        ContactController.$inject = ['$scope'];
+        appModule.controller("ContactController", ContactController);
+
+        appModule.directive("myContact", function() {
+           return {
+             //template: '<td>{{c.name}}</td><td>{{c.phone}}</td><td>{{c.line1}}</td><td>{{c.city}}</td>'
+             templateUrl: 'contactRowTemplate.html',
+             restrict: 'A'
+           };
+        });
+    </script>
+</html>

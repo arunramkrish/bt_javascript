@@ -48,7 +48,7 @@ public class ContactServlet extends HttpServlet {
 		Contact newContact = mapper.readValue(request.getInputStream(), Contact.class);
 		
 		contacts.add(newContact);
-		
+		response.setHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
 		mapper.writeValue(response.getOutputStream(), contacts);
 		
 	}
