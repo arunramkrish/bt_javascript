@@ -6,10 +6,11 @@ AngularJS Conctacts Table
 </head>
 <body ng-app="contactsApp" ng-init="contactsCount=0;">
     <div ng-controller="ContactController as contactCtrl">
+        <!--
         <div ng-controller="ChildController">
             <input type="text" id="childName" ng-model="childName"/>
             <input type="button" ng-click="addContact()"/>
-        </div>
+        </div>-->
 	<h1>AngularJS Contact Table</h1>
 	<div id="formDiv">
 		<form id="contactForm" action="#">
@@ -46,8 +47,7 @@ AngularJS Conctacts Table
 </body>
     <script>
         var appModule = angular.module("contactsApp", []);
-        
-        appModule.controller("ContactController", function($scope) {
+        var ContactController = function($scope) {
            $scope.contact = {};
             $scope.contacts = [];
             
@@ -55,12 +55,15 @@ AngularJS Conctacts Table
                 $scope.contacts.push($scope.contact);
                 $scope.contact = {};
             }
-        });
+        };
+        ContactController.$inject = ['$scope'];
+        appModule.controller("ContactController", ContactController);
         
+        /*
         appModule.controller("ChildController", function($scope) {
           $scope.childClicked = function() {
               alert($scope.childName);
           };
-        });
+        });*/
     </script>
 </html>

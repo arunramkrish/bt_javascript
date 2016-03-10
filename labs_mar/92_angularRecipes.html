@@ -1,0 +1,44 @@
+<!doctype html>
+<html>
+<head>
+AngularJS Recipes
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.js"></script>
+    <script type="text/javascript" src="include/7_logger.js"></script>
+</head>
+<body ng-app="recipesApp" >
+    <div ng-controller="RecipeController as recipeCtrl">
+        
+    </div>
+    <div id="logDiv"></div>
+    
+    <script>
+        var utilModule = angular.module("utilModule", []);
+        var errorMessages = {
+            "MANDATORY" : "Enter a value for field",
+            "FORMAT" : "Enter value in the right format"
+        };
+        utilModule.constant("ErrorMessages", errorMessages);
+        
+        utilModule.provider("Logger", ["ErrorMessages", function LoggerProvider(errorMessages) {
+           this.$get = function() {
+               Logger.logLevel = this.logLevel;
+               Logger.container = this.container;
+               return Logger;
+           }
+        }]);
+        
+        var svcModule = angular.module("serviceModule", ["utilModule"]);
+        
+        var appModule = angular.module("recipesApp", ["utilModule", "serviceModule"]);
+        
+        utilModule.config(['LoggerProvider', function(logProvider) {
+            logProvider.logLevel = "DEBUG";
+            logProvider.container = "logDiv";
+        }]);
+        
+        appModule.controller('RecipeController', ['Logger', '$scope', function (logger, $scope) {
+            Logger.debug("I am in controller constructor");                                 
+        }]);
+    </script>
+    </body>
+</html>
