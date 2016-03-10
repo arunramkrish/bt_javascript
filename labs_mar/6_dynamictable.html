@@ -7,7 +7,11 @@
     <div id="tableDiv"></div>
     <script type="text/javascript" src="include/6_datatable.js"></script>
     <script>
-        var contacts = [{
+        var contacts;
+        if (window.localStorage.getItem("contacts")) {
+            contacts = JSON.parse(window.localStorage.getItem("contacts"));
+        } else {
+            contacts = [{
                 "name" : "BT",
                 "phone" : "5467890",
                 "line1" : "Koramangala",
@@ -23,6 +27,8 @@
                 "line1" : "Domlur",
                 "city" : "Bangalore"
             }];
+            window.localStorage.setItem("contacts", JSON.stringify(contacts));
+        }
     
     new Datatable("tableDiv", contacts);
     </script></body></html>

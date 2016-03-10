@@ -1,0 +1,86 @@
+<!doctype html>
+<html>
+<head>
+Dynamic Table
+<link rel="stylesheet" type="text/css" href="include/6_datatable.css" />
+</head>
+<body>
+	<h1>Dynamic Table</h1>
+	<div id="formDiv">
+		<form id="contactForm" action="#" onsubmit="postContact(this);return false;">
+			<p>
+				<input type="text" id="name" title="Name"  />
+			</p>
+			<p>
+				<input type="text" id="phone" title="Phone" />
+			</p>
+			<p>
+				<input type="text" id="line1" title="Address - Line1" />
+			</p>
+			<p>
+				<input type="text" id="city" title="Address - City" />
+			</p>
+			<p>
+				<input type="submit" value="Add"/>
+				<input type="button"
+					onclick="validateRequiredFields('name','phone', 'line1', 'city');"
+					value="Validate" />
+			</p>
+		</form>
+	</div>
+	<div id="tableDiv"></div>
+	<script type="text/javascript" src="include/6_datatable.js"></script>
+	<script>
+		var httpRequest;
+		function postContact(formObj) {
+			var contact = {
+					name:formObj["name"].value,
+					phone:formObj["phone"].value,
+					line1:formObj["line1"].value,
+					city: formObj["city"].value
+			};
+			var requestData = JSON.stringify(contact);
+
+			httpRequest = new XMLHttpRequest();
+			if (!httpRequest) {
+				alert('Giving up :( Cannot create an XMLHTTP instance');
+				return false;
+			}
+			httpRequest.onreadystatechange = showContacts;
+			httpRequest.open('POST', "contacts");
+			httpRequest.setRequestHeader('Content-Type', 'application/json');
+			httpRequest.send(requestData);
+
+		}
+		function showContacts() {
+			if (httpRequest.readyState === XMLHttpRequest.DONE) {
+				if (httpRequest.status === 200) {
+					var contacts = JSON.parse(httpRequest.responseText);
+					document.getElementById("tableDiv").innerHTML = "";
+					new Datatable("tableDiv", contacts);
+				} else {
+					alert('There was a problem with the request.');
+				}
+			} else {
+				document.getElementById("tableDiv").innerHTML = "Loading...";
+			}
+		}
+		(function() {
+			makeRequest('contacts.json');
+
+			function makeRequest(url) {
+				httpRequest = new XMLHttpRequest();
+
+				if (!httpRequest) {
+					alert('Giving up :( Cannot create an XMLHTTP instance');
+					return false;
+				}
+				httpRequest.onreadystatechange = showContacts;
+				httpRequest.open('GET', url);
+				httpRequest.send();
+			}
+
+		})();
+	</script>
+</body>
+</html>

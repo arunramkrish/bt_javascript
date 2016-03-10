@@ -1,12 +1,21 @@
 <!doctype html>
 <html><head>Javascript Functions
+    <script type="text/javascript" src="include/7_logger.js"></script>
+    <script type="text/javascript" src="include/7_validator.js"></script>
+    <script type="text/javascript" src="include/7_bind.js"></script>
 </head>
 <body>
     <h1>Javascript Functions</h1>
     <div id="messages">
     </div>
+    <form id="contactForm">
+        <p><input type="text" id="name" title="Name" /></p>
+        <p><input type="text" id="phone" title="Phone"/></p>
+        <p><input type="text" id="line1" title="Address - Line1"/></p>
+        <p><input type="text" id="city" title="Address - City"/></p>
+        <p><input type="button" onclick="validateRequiredFields('name','phone', 'line1', 'city');" value="Submit" /></p>
+    </form>
     </body>
-    <script type="text/javascript" src="include/7_logger.js"></script>
     <script>
         window.log("messages", "My First Message");
         window.logVar("messages", "My Second Message");
@@ -21,6 +30,8 @@
         Logger.debug("My Debug Log");
         Logger.logLevel = "INFO";
         Logger.debug("My Debug Log - Not seen");
+        
+        document.forms[0]["name"].onblur = checkMandatory.bind(document.forms[0]["name"]);
         
     </script>
 </html>
