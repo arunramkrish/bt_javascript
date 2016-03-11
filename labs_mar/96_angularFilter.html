@@ -15,6 +15,9 @@ AngularJS Conctacts Table
 	<div id="formDiv">
 		<form id="contactForm" action="#">
 			<p>
+				<input type="text" id="name" title="Image"  ng-model="contact.imageUrl"/>
+			</p>
+			<p>
 				<input type="text" id="name" title="Name"  ng-model="contact.name"/>
 			</p>
 			<p>
@@ -31,12 +34,18 @@ AngularJS Conctacts Table
 				<input type="button" value="Validate"/>
 			</p>
             <span ng-bind="contact.name"></span>
+            <input type="text" ng-model="maxWidth"/>
 		</form>
 	</div>
+    <div id="filterDiv">
+        <span>Filter</span>
+        <span><input type="text" name="filterText" ng-model="contactFilter"/></span>
+        </div>   
 	<div id="tableDiv">
         <table>
-            <tr><th>Name</th><th>Phone</th><th>Line1</th><th>City</th></tr>
-            <tr ng-repeat="c in contacts">
+            <tr><th>Photo</th><th>Name</th><th>Phone</th><th>Line1</th><th>City</th></tr>
+            <tr ng-repeat="c in contacts | filter : {name: contactFilter}">
+                <td><img ng-src="{{c.imageUrl}}" ng-style="maxWidth:{{maxWidth}};"/></td>
                 <td>{{c.name}}</td>
                 <td>{{c.phone}}</td>
                 <td>{{c.line1}}</td>

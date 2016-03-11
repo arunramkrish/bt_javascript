@@ -1,0 +1,12 @@
+<div id="tableDiv">
+    <table>
+        <tr><th>Name</th><th>Phone</th><th>Line1</th><th>City</th></tr>
+        <tr ng-repeat="c in contacts">
+            <td><a ng-href="#/contactForm?name={{c.name}}">{{c.name}}</a></td>
+            <td>{{c.phone}}</td>
+            <td>{{c.line1}}</td>
+            <td>{{c.city}}</td>
+        </tr>
+    </table>
+    <a href="#/contactForm">Add Contact</a>
+</div>

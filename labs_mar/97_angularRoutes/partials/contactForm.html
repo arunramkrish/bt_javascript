@@ -1,0 +1,20 @@
+<div id="formDiv">
+		<form id="contactForm" action="#" onsubmit="return false;">
+			<p>
+				<input type="text" id="name" title="Name"  ng-model="contact.name"/>
+			</p>
+			<p>
+				<input type="text" id="phone" title="Phone" ng-model="contact.phone"/>
+			</p>
+			<p>
+				<input type="text" id="line1" title="Address - Line1" ng-model="contact.line1"/>
+			</p>
+			<p>
+				<input type="text" id="city" title="Address - City" ng-model="contact.city"/>
+			</p>
+			<p>
+				<input type="button" value="Add" ng-click="addContact()"/>
+				<input type="button" value="Cancel" ng-click="cancel()"/>
+			</p>
+		</form>
+</div>
